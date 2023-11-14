@@ -54,7 +54,7 @@ Please install VSCode extensions:
 To install dependencies on a given `sparkaiku` Python environnement, from `./backend` run the command:
 
 ```bash
-conda create --name sparkaiku --file ./requirements.txt
+conda create --name sparkaiku --channel=conda-forge --file ./requirements.txt
 ```
 
 Runnable scripts are in `./backend` and need to be run using the newly created `sparkaiku` Python environnement. From `./backend`, run [main.py](.\backend\src\main.py).
