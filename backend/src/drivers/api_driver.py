@@ -1,11 +1,16 @@
 import uvicorn
-from adapters.controllers.connections_rts import ConnectionsRts, connections_rts_impl
-from drivers.env_loader import EnvLoader, env_laoder_impl
+from adapters.routes.connections.connections_rts import (
+    ConnectionsRts,
+    connections_rts_impl,
+)
+from drivers.env_loader_driver import EnvLoaderDriver, env_laoder_driver_impl
 from fastapi import FastAPI
 
 
-class APIDriver:
-    def __init__(self, env_loader: EnvLoader, connections_rts: ConnectionsRts) -> None:
+class ApiDriver:
+    def __init__(
+        self, env_loader: EnvLoaderDriver, connections_rts: ConnectionsRts
+    ) -> None:
         self.env_loader = env_loader
         self.app = FastAPI(title="SparKaiKu")
         self.app.include_router(connections_rts.router())
@@ -29,5 +34,5 @@ class APIDriver:
             )
 
 
-api_driver_impl = APIDriver(env_laoder_impl, connections_rts_impl)
-app = None if env_laoder_impl.prod_mode else api_driver_impl.app
+api_driver_impl = ApiDriver(env_laoder_driver_impl, connections_rts_impl)
+app = None if env_laoder_driver_impl.prod_mode else api_driver_impl.app
