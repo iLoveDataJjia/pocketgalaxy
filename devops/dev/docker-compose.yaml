@@ -1,0 +1,13 @@
+version: "3.8"
+
+services:
+  postgres:
+    image: postgres:14
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: sparkaiku_user
+      POSTGRES_PASSWORD: sparkaiku_pwd
+      POSTGRES_DB: sparkaiku_db
+    volumes:
+      - ./volumes/data:/var/lib/postgresql/data

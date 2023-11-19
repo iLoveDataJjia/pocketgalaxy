@@ -1,10 +1,10 @@
+from datetime import datetime
 from typing import Literal
 
 from pydantic import BaseModel
 
 
-class PostgreSQLIDto(BaseModel):
-    name: str
+class PostgreSqlInfoIDto(BaseModel):
     type: Literal["postgresql"]
     host: str
     port: int
@@ -13,8 +13,7 @@ class PostgreSQLIDto(BaseModel):
     password: str | None
 
 
-class MySQLIDto(BaseModel):
-    name: str
+class MySqlInfoIDto(BaseModel):
     type: Literal["mysql"]
     host: str
     port: int
@@ -23,14 +22,19 @@ class MySQLIDto(BaseModel):
     password: str | None
 
 
-ConnectionIDto = PostgreSQLIDto | MySQLIDto
+ConnectorInfoIDto = PostgreSqlInfoIDto | MySqlInfoIDto
+
+
+class ConnectionIDto(BaseModel):
+    name: str
+    connector_info: ConnectorInfoIDto
 
 
 class ConnectionODto(BaseModel):
+    type: Literal["postgresql", "mysql"]
     id: int
     name: str
-    type: Literal["postgresql", "mysql"]
-    updated_at: int
+    updated_at: datetime
 
 
 class TestStatusODto(BaseModel):

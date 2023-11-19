@@ -3,3 +3,5 @@ loguru
 fastapi
 uvicorn-standard
 sqlalchemy
+psycopg2
+alembic

@@ -9,30 +9,31 @@ from fastapi import FastAPI
 
 class ApiDriver:
     def __init__(
-        self, env_loader: EnvLoaderDriver, connections_rts: ConnectionsRts
+        self, connections_rts: ConnectionsRts, env_loader_driver: EnvLoaderDriver
     ) -> None:
-        self.env_loader = env_loader
-        self.app = FastAPI(title="SparKaiKu")
-        self.app.include_router(connections_rts.router())
+        self._connections_rts = connections_rts
+        self._env_loader_driver = env_loader_driver
+        self._app = FastAPI(title="SparKaiKu")
+        self._app.include_router(self._connections_rts.router())
 
     def run(self) -> None:
-        if self.env_loader.prod_mode:
+        if self._env_loader_driver.prod_mode:
             uvicorn.run(
-                app=self.app,
+                app=self._app,
                 host="0.0.0.0",
-                port=self.env_loader.api_port,
+                port=self._env_loader_driver.api_port,
                 log_level="info",
             )
         else:
             uvicorn.run(
-                app="drivers.api_driver:app",
+                app="drivers.api_driver:_",
                 host="0.0.0.0",
-                port=self.env_loader.api_port,
+                port=self._env_loader_driver.api_port,
                 log_level="info",
                 reload=True,
                 reload_dirs="./src",
             )
 
 
-api_driver_impl = ApiDriver(env_laoder_driver_impl, connections_rts_impl)
-app = None if env_laoder_driver_impl.prod_mode else api_driver_impl.app
+api_driver_impl = ApiDriver(connections_rts_impl, env_laoder_driver_impl)
+_ = None if env_laoder_driver_impl.prod_mode else api_driver_impl._app

@@ -3,20 +3,22 @@ from typing import List
 from adapters.routes.connections.dto import (
     ConnectionIDto,
     ConnectionODto,
+    ConnectorInfoIDto,
     CountDataFramesODto,
-    MySQLIDto,
-    PostgreSQLIDto,
     TestStatusODto,
 )
+from drivers.db_driver import DbDriver, db_driver_impl
 from fastapi import APIRouter, FastAPI
-from loguru import logger
 from usecases.connections_usecase import ConnectionsUseCase, connections_usecase_impl
 
 
 class ConnectionsRts:
-    def __init__(self, connections_usecase: ConnectionsUseCase) -> None:
+    def __init__(
+        self, connections_usecase: ConnectionsUseCase, db_driver: DbDriver
+    ) -> None:
+        self._connections_usecase = connections_usecase
+        self._db_driver = db_driver
         self._app = FastAPI()
-        self.connections_usecase = connections_usecase
 
         @self._app.get(
             summary="List connections",
@@ -24,22 +26,25 @@ class ConnectionsRts:
             response_model=List[ConnectionODto],
         )
         def _():
-            return self.connections_usecase.list_connections()
+            with self._db_driver.get_session() as session:
+                return self._connections_usecase.list_connections(session)
 
         @self._app.post(
             summary="Create a connection",
             path="/connections",
             response_model=List[ConnectionODto],
         )
-        def _(connection_idto: ConnectionIDto):
-            return self.connections_usecase.create_connection(connection_idto)
+        def _(connection: ConnectionIDto):
+            with self._db_driver.get_session() as session:
+                return self._connections_usecase.create_connection(session, connection)
 
-        @self._app.put(
+        @self._app.post(
             summary="Test status of a connection in creation",
             path="/connections/test-status",
+            response_model=TestStatusODto,
         )
-        def _(connection_idto: ConnectionIDto):
-            raise NotImplementedError
+        def _(connector_info: ConnectorInfoIDto):
+            return self._connections_usecase.test_connection(connector_info)
 
         @self._app.put(
             summary="Update a connection",
@@ -57,7 +62,7 @@ class ConnectionsRts:
         def _(connection_id: int):
             raise NotImplementedError
 
-        @self._app.put(
+        @self._app.get(
             summary="Test status of a connection",
             path="/connections/{connection_id}/test-status",
             response_model=TestStatusODto,
@@ -77,4 +82,4 @@ class ConnectionsRts:
         return self._app.router
 
 
-connections_rts_impl = ConnectionsRts(connections_usecase_impl)
+connections_rts_impl = ConnectionsRts(connections_usecase_impl, db_driver_impl)
