@@ -1,9 +1,10 @@
+from abc import abstractmethod
 from datetime import datetime
-from typing import Optional
+from typing import List, Optional
 
 from drivers.db_driver import db_driver_impl
 from entities.connection_ent import ConnectionEnt, MySqlEnt, PostgreSqlEnt
-from helpers.backend_exception import ServerException
+from helpers.backend_exception import ClientException, ServerException
 from sqlalchemy import ForeignKey, select
 from sqlalchemy.orm import Mapped, Session, mapped_column, selectin_polymorphic
 from sqlalchemy.sql.functions import now
@@ -34,15 +35,19 @@ class ConnectionRow(db_driver_impl.Base):
                 f"Encountered an unexpected entity of type {type(entity)}."
             )
 
+    @abstractmethod
     def to_ent(self) -> ConnectionEnt:
-        if isinstance(self, PostgreSqlRow):
-            return self.to_ent()
-        elif isinstance(self, MySqlRow):
-            return self.to_ent()
-        else:
-            raise ServerException(
-                f"Encountered an unexpected row of type {type(self)}."
-            )
+        raise NotImplementedError
+
+    @abstractmethod
+    def update_from_ent(self, entity: ConnectionEnt) -> None:
+        raise NotImplementedError
+
+    def _raiseCrossConnectionTypeUpdate(self) -> None:
+        raise ClientException(
+            "Apologies, the system doesn't allow updates across different connection types. "
+            + "To ensure smooth operations, updates should be made within the same connection type."
+        )
 
 
 class PostgreSqlRow(ConnectionRow):
@@ -85,6 +90,17 @@ class PostgreSqlRow(ConnectionRow):
         ent.updated_at = self.updated_at
         return ent
 
+    def update_from_ent(self, entity: ConnectionEnt) -> None:
+        if not isinstance(entity, PostgreSqlEnt):
+            self._raiseCrossConnectionTypeUpdate()
+        self.name = entity.name
+        self.is_up = entity.is_up
+        self.host = entity.host
+        self.port = entity.port
+        self.database = entity.database
+        self.user = entity.user
+        self.password = entity.password
+
 
 class MySqlRow(ConnectionRow):
     __tablename__ = "connections_mysql"
@@ -126,17 +142,56 @@ class MySqlRow(ConnectionRow):
         ent.updated_at = self.updated_at
         return ent
 
+    def update_from_ent(self, entity: ConnectionEnt) -> None:
+        if not isinstance(entity, MySqlEnt):
+            self._raiseCrossConnectionTypeUpdate()
+        self.name = entity.name
+        self.is_up = entity.is_up
+        self.host = entity.host
+        self.port = entity.port
+        self.database = entity.database
+        self.user = entity.user
+        self.password = entity.password
+
 
 class ConnectionsRep:
-    def list(self, session: Session):
+    def list(self, session: Session) -> List[ConnectionEnt]:
         loader_opt = selectin_polymorphic(ConnectionRow, [PostgreSqlRow, MySqlRow])
         stmt = select(ConnectionRow).options(loader_opt)
         entities = [row.to_ent() for row in session.scalars(stmt).all()]
         return entities
 
-    def save(self, session: Session, entity: ConnectionEnt):
+    def save(self, session: Session, entity: ConnectionEnt) -> None:
         row = ConnectionRow.from_ent(entity)
         session.add(row)
+
+    def delete(self, session: Session, connection_id: int) -> None:
+        row = self._getOrRaiseWhenConnectionNotFound(session, connection_id)
+        session.delete(row)
+
+    def get(self, session: Session, connection_id: int) -> ConnectionEnt:
+        return self._getOrRaiseWhenConnectionNotFound(session, connection_id).to_ent()
+
+    def update(self, session: Session, entity: ConnectionEnt) -> None:
+        row = self._getOrRaiseWhenConnectionNotFound(session, entity.id)
+        row.update_from_ent(entity)
+
+    def _getOrRaiseWhenConnectionNotFound(
+        self, session: Session, connection_id: int
+    ) -> ConnectionRow:
+        loader_opt = selectin_polymorphic(ConnectionRow, [PostgreSqlRow, MySqlRow])
+        stmt = (
+            select(ConnectionRow)
+            .options(loader_opt)
+            .where(ConnectionRow.id == connection_id)
+        )
+        row = session.scalars(stmt).one_or_none()
+        if row:
+            return row
+        else:
+            raise ClientException(
+                f"The connection associated with the provided ID ({connection_id}) does not exist."
+            )
 
 
 connections_rep_impl = ConnectionsRep()

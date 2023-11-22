@@ -9,7 +9,7 @@ from sqlalchemy.orm import DeclarativeBase, Session
 
 class DbDriver:
     def __init__(self, env_loader_driver: EnvLoaderDriver) -> None:
-        self._env_loader_driver = env_loader_driver
+        self.env_loader_driver = env_loader_driver
         config = configparser.ConfigParser()
         config.read("alembic.ini")
         self._session = Session(create_engine(config["alembic"]["sqlalchemy.url"]))

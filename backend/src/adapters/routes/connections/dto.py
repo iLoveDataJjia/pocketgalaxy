@@ -35,6 +35,7 @@ class ConnectionODto(BaseModel):
     id: int
     name: str
     updated_at: datetime
+    is_up: bool
 
 
 class TestStatusODto(BaseModel):

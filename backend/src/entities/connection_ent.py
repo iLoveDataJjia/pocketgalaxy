@@ -1,7 +1,11 @@
 from datetime import datetime
 from typing import Literal
 
-from adapters.routes.connections.dto import ConnectionIDto
+from adapters.routes.connections.dto import (
+    ConnectionIDto,
+    MySqlInfoIDto,
+    PostgreSqlInfoIDto,
+)
 
 
 class ConnectionEnt:
@@ -17,25 +21,27 @@ class ConnectionEnt:
     @classmethod
     def from_dto(cls, connection_dto: ConnectionIDto, is_up: bool) -> "ConnectionEnt":
         if connection_dto.connector_info.type == "postgresql":
-            return PostgreSqlEnt(
-                connection_dto.name,
-                is_up,
-                connection_dto.connector_info.host,
-                connection_dto.connector_info.port,
-                connection_dto.connector_info.database,
-                connection_dto.connector_info.user,
-                connection_dto.connector_info.password,
+            return PostgreSqlEnt.from_dto(
+                connection_dto.name, is_up, connection_dto.connector_info
             )
         elif connection_dto.connector_info.type == "mysql":
-            return PostgreSqlEnt(
-                connection_dto.name,
-                is_up,
-                connection_dto.connector_info.host,
-                connection_dto.connector_info.port,
-                connection_dto.connector_info.database,
-                connection_dto.connector_info.user,
-                connection_dto.connector_info.password,
+            return MySqlEnt.from_dto(
+                connection_dto.name, is_up, connection_dto.connector_info
             )
+        else:
+            raise NotImplementedError
+
+    def to_idto(self) -> ConnectionIDto:
+        if isinstance(self, PostgreSqlEnt):
+            return self.to_idto()
+        elif isinstance(self, MySqlEnt):
+            return self.to_idto()
+        else:
+            raise NotImplementedError
+
+    def update(self, entity: "ConnectionEnt") -> "ConnectionEnt":
+        entity.id = self.id
+        return entity
 
 
 class PostgreSqlEnt(ConnectionEnt):
@@ -56,6 +62,33 @@ class PostgreSqlEnt(ConnectionEnt):
         self.user = user
         self.password = password
 
+    @classmethod
+    def from_dto(
+        cls, name: str, is_up: bool, postgresql_info: PostgreSqlInfoIDto
+    ) -> "PostgreSqlEnt":
+        return PostgreSqlEnt(
+            name,
+            is_up,
+            postgresql_info.host,
+            postgresql_info.port,
+            postgresql_info.database,
+            postgresql_info.user,
+            postgresql_info.password,
+        )
+
+    def to_idto(self) -> ConnectionIDto:
+        return ConnectionIDto(
+            name=self.name,
+            connector_info=PostgreSqlInfoIDto(
+                type=self.type,
+                host=self.host,
+                port=self.port,
+                database=self.database,
+                user=self.user,
+                password=self.password,
+            ),
+        )
+
 
 class MySqlEnt(ConnectionEnt):
     def __init__(
@@ -74,3 +107,30 @@ class MySqlEnt(ConnectionEnt):
         self.database = database
         self.user = user
         self.password = password
+
+    @classmethod
+    def from_dto(
+        cls, name: str, is_up: bool, mysql_info: MySqlInfoIDto
+    ) -> "MySqlInfoIDto":
+        return MySqlEnt(
+            name,
+            is_up,
+            mysql_info.host,
+            mysql_info.port,
+            mysql_info.database,
+            mysql_info.user,
+            mysql_info.password,
+        )
+
+    def to_idto(self) -> ConnectionIDto:
+        return ConnectionIDto(
+            name=self.name,
+            connector_info=MySqlInfoIDto(
+                type=self.type,
+                host=self.host,
+                port=self.port,
+                database=self.database,
+                user=self.user,
+                password=self.password,
+            ),
+        )

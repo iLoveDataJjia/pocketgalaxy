@@ -1,10 +1,10 @@
 import psycopg2
-from adapters.routes.connections.dto import PostgreSqlInfoIDto
+from adapters.routes.connections.dto import MySqlInfoIDto
 from psycopg2 import OperationalError
 
 
 class PostgreSqlDriver:
-    def test_status(self, postgres_conn_dto: PostgreSqlInfoIDto) -> bool:
+    def test_status(self, postgres_conn_dto: MySqlInfoIDto) -> bool:
         try:
             psycopg2.connect(
                 host=postgres_conn_dto.host,
