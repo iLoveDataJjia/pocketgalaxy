@@ -41,12 +41,7 @@ class ConnectionsRts:
                 with self.db_driver.get_session() as session:
                     return self.connections_usecase.create(session, connection)
             except IntegrityError as e:
-                raise (
-                    ClientException("The connection name has already been utilized.")
-                    if e.args[0]
-                    == "(sqlite3.IntegrityError) UNIQUE constraint failed: connections.name"
-                    else e
-                )
+                self._raiseWhenNameAlreadyUtilized(e)
 
         @self._app.post(
             summary="Test status of a connection in creation",
@@ -62,10 +57,13 @@ class ConnectionsRts:
             response_model=List[ConnectionODto],
         )
         def _(connection_id: int, connection_idto: ConnectionIDto):
-            with self.db_driver.get_session() as session:
-                return self.connections_usecase.update(
-                    session, connection_id, connection_idto
-                )
+            try:
+                with self.db_driver.get_session() as session:
+                    return self.connections_usecase.update(
+                        session, connection_id, connection_idto
+                    )
+            except IntegrityError as e:
+                self._raiseWhenNameAlreadyUtilized(e)
 
         @self._app.delete(
             summary="Delete a connection",
@@ -95,6 +93,14 @@ class ConnectionsRts:
 
     def router(self) -> APIRouter:
         return self._app.router
+
+    def _raiseWhenNameAlreadyUtilized(self, e: IntegrityError) -> None:
+        raise (
+            ClientException("The connection name has already been utilized.")
+            if e.args[0]
+            == "(sqlite3.IntegrityError) UNIQUE constraint failed: connections.name"
+            else e
+        )
 
 
 connections_rts_impl = ConnectionsRts(connections_usecase_impl, db_driver_impl)

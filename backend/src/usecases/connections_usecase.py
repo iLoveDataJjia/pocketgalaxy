@@ -23,6 +23,7 @@ class ConnectionsUseCase:
     ) -> None:
         self.connections_rep = connections_rep
         self.postgresql_driver = postgresql_driver
+        self.mysql_driver = mysql_driver
 
     def list(self, session: Session) -> List[ConnectionODto]:
         return [
