@@ -1,3 +1,4 @@
+from abc import ABC, abstractmethod
 from datetime import datetime
 from typing import Literal
 
@@ -6,9 +7,10 @@ from adapters.routes.connections.dto import (
     MySqlInfoIDto,
     PostgreSqlInfoIDto,
 )
+from helpers.backend_exception import AbstractMethodException
 
 
-class ConnectionEnt:
+class ConnectionEnt(ABC):
     def __init__(
         self, type: Literal["postgresql", "mysql"], name: str, is_up: bool
     ) -> None:
@@ -31,13 +33,9 @@ class ConnectionEnt:
         else:
             raise NotImplementedError
 
+    @abstractmethod
     def to_idto(self) -> ConnectionIDto:
-        if isinstance(self, PostgreSqlEnt):
-            return self.to_idto()
-        elif isinstance(self, MySqlEnt):
-            return self.to_idto()
-        else:
-            raise NotImplementedError
+        pass
 
     def update(self, entity: "ConnectionEnt") -> "ConnectionEnt":
         entity.id = self.id

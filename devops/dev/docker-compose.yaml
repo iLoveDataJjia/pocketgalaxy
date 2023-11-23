@@ -1,13 +1,25 @@
 version: "3.8"
 
 services:
-  postgres:
-    image: postgres:14
+  postgresql:
+    image: postgres:latest
     ports:
       - "5432:5432"
     environment:
-      POSTGRES_USER: sparkaiku_user
-      POSTGRES_PASSWORD: sparkaiku_pwd
-      POSTGRES_DB: sparkaiku_db
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: pwd
+      POSTGRES_DB: db
     volumes:
-      - ./volumes/data:/var/lib/postgresql/data
+      - ./volumes/postgresql/data:/var/lib/postgresql/data
+
+  mysql:
+    image: mysql:latest
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: pwd
+      MYSQL_USER: user
+      MYSQL_PASSWORD: pwd
+      MYSQL_DATABASE: db
+    volumes:
+      - ./volumes/mysql/data:/var/lib/postgresql/data

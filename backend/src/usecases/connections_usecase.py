@@ -7,6 +7,7 @@ from adapters.routes.connections.dto import (
     ConnectorInfoIDto,
     TestStatusODto,
 )
+from drivers.services.mysql_driver import MySqlDriver, mysql_driver_impl
 from drivers.services.postgresql_driver import PostgreSqlDriver, postgresql_driver_impl
 from entities.connection_ent import ConnectionEnt
 from helpers.backend_exception import ClientException
@@ -18,6 +19,7 @@ class ConnectionsUseCase:
         self,
         connections_rep: ConnectionsRep,
         postgresql_driver: PostgreSqlDriver,
+        mysql_driver: MySqlDriver,
     ) -> None:
         self.connections_rep = connections_rep
         self.postgresql_driver = postgresql_driver
@@ -45,6 +47,8 @@ class ConnectionsUseCase:
     def test(self, connector_info: ConnectorInfoIDto) -> TestStatusODto:
         if connector_info.type == "postgresql":
             status = self.postgresql_driver.test_status(connector_info)
+        elif connector_info.type == "mysql":
+            status = self.mysql_driver.test_status(connector_info)
         else:
             raise NotImplementedError
         return TestStatusODto(is_up=status)
@@ -74,5 +78,5 @@ class ConnectionsUseCase:
 
 
 connections_usecase_impl = ConnectionsUseCase(
-    connections_rep_impl, postgresql_driver_impl
+    connections_rep_impl, postgresql_driver_impl, mysql_driver_impl
 )

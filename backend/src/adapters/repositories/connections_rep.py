@@ -1,10 +1,13 @@
-from abc import abstractmethod
 from datetime import datetime
 from typing import List, Optional
 
 from drivers.db_driver import db_driver_impl
 from entities.connection_ent import ConnectionEnt, MySqlEnt, PostgreSqlEnt
-from helpers.backend_exception import ClientException, ServerException
+from helpers.backend_exception import (
+    AbstractMethodException,
+    ClientException,
+    ServerException,
+)
 from sqlalchemy import ForeignKey, select
 from sqlalchemy.orm import Mapped, Session, mapped_column, selectin_polymorphic
 from sqlalchemy.sql.functions import now
@@ -35,13 +38,11 @@ class ConnectionRow(db_driver_impl.Base):
                 f"Encountered an unexpected entity of type {type(entity)}."
             )
 
-    @abstractmethod
     def to_ent(self) -> ConnectionEnt:
-        raise NotImplementedError
+        raise AbstractMethodException
 
-    @abstractmethod
-    def update_from_ent(self, entity: ConnectionEnt) -> None:
-        raise NotImplementedError
+    def update_from_ent(self, _: ConnectionEnt) -> None:
+        raise AbstractMethodException
 
     def _raiseCrossConnectionTypeUpdate(self) -> None:
         raise ClientException(
