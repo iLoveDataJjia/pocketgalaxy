@@ -16,7 +16,7 @@ export function SparKaiKuLink() {
         height={24}
         alt="SparKaiKu"
       />
-      <StrokedLabel text="SparKaiKu" className="text-sky-300" />
+      <StrokedLabel text="SparKaiKu" className="text-sky-300 cursor-pointer" />
     </button>
   );
 }

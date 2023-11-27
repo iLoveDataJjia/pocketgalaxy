@@ -1,3 +1,4 @@
+import { ConnectorType } from "@/helpers/ConnectorType";
 import Image from "next/image";
 import { MouseEventHandler } from "react";
 
@@ -5,7 +6,7 @@ export function ConnectorButton({
   type,
   onClick,
 }: {
-  type: "PostgreSQL" | "MySQL" | "MariaDB" | "MongoDB" | "MinIO";
+  type: ConnectorType;
   onClick: MouseEventHandler<HTMLButtonElement>;
 }) {
   return (

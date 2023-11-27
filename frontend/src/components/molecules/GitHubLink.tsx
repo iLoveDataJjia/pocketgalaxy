@@ -9,8 +9,8 @@ export function GitHubLink() {
       rel="noopener noreferrer"
       className="flex items-center space-x-1"
     >
-      <Image src="/icons/GitHub.webp" width={20} height={20} alt={"Docker"} />
-      <StrokedLabel text="GitHub" className="text-emerald-400" />
+      <Image src="/icons/GitHub.webp" width={19} height={16} alt="GitHub" />
+      <StrokedLabel text="GitHub" className="text-emerald-400 cursor-pointer" />
     </a>
   );
 }

@@ -1,14 +1,14 @@
 import { MouseEventHandler } from "react";
 import { StrokedLabel } from "@/components/atoms/StrokedLabel";
-import Image from "next/image";
 import { ConnectorImage } from "../atoms/ConnectorImage";
+import { ConnectorType } from "@/helpers/ConnectorType";
 
 export function ConnectorButtonLabeled({
   type,
   onClick,
   className,
 }: {
-  type: "PostgreSQL" | "MySQL" | "MariaDB" | "MongoDB" | "MinIO";
+  type: ConnectorType;
   onClick: MouseEventHandler<HTMLButtonElement>;
   className?: string;
 }) {
@@ -21,11 +21,11 @@ export function ConnectorButtonLabeled({
     >
       <button
         onClick={onClick}
-        className="bg-neutral-300 backdrop-blur-sm w-12 h-12 rounded-lg border-2 border-black"
+        className="bg-neutral-300 opacity-90 w-12 h-12 rounded-lg border-2 border-black"
       >
         <ConnectorImage type={type} size="sm" />
       </button>
-      <StrokedLabel text={type} className="select-none text-white" />
+      <StrokedLabel text={type.toString()} className="select-none text-white" />
     </div>
   );
 }

@@ -1,10 +1,11 @@
 import Image from "next/image";
+import { ConnectorType } from "@/helpers/ConnectorType";
 
 export function ConnectorImage({
   type,
   size,
 }: {
-  type: "PostgreSQL" | "MySQL" | "MariaDB" | "MongoDB" | "MinIO";
+  type: ConnectorType;
   size: "sm" | "base";
 }) {
   const { width, height, maxHeigthCSS } = (() => {

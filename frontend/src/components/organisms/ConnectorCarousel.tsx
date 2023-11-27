@@ -1,34 +1,35 @@
 import { ChevronButton } from "@/components/atoms/ChevronButton";
 import { ConnectorButtonLabeled } from "@/components/molecules/ConnectorButtonLabeled";
 import { useState, useMemo } from "react";
+import { ConnectorType } from "@/helpers/ConnectorType";
 
 export function ConnectorCarousel() {
   const allConnectors = useMemo(
     () => [
       <ConnectorButtonLabeled
-        key="PostgreSQL"
-        type="PostgreSQL"
-        onClick={() => console.log("PostgreSQL")}
+        key={ConnectorType.PostgreSQL}
+        type={ConnectorType.PostgreSQL}
+        onClick={() => console.log(ConnectorType.PostgreSQL)}
       />,
       <ConnectorButtonLabeled
-        key="MySQL"
-        type="MySQL"
-        onClick={() => console.log("MySQL")}
+        key={ConnectorType.MySQL}
+        type={ConnectorType.MySQL}
+        onClick={() => console.log(ConnectorType.MySQL)}
       />,
       <ConnectorButtonLabeled
-        key="MariaDB"
-        type="MariaDB"
-        onClick={() => console.log("MariaDB")}
+        key={ConnectorType.MariaDB}
+        type={ConnectorType.MariaDB}
+        onClick={() => console.log(ConnectorType.MariaDB)}
       />,
       <ConnectorButtonLabeled
-        key="MongoDB"
-        type="MongoDB"
-        onClick={() => console.log("MongoDB")}
+        key={ConnectorType.MongoDB}
+        type={ConnectorType.MongoDB}
+        onClick={() => console.log(ConnectorType.MongoDB)}
       />,
       <ConnectorButtonLabeled
-        key="MinIO"
-        type="MinIO"
-        onClick={() => console.log("MinIO")}
+        key={ConnectorType.MinIO}
+        type={ConnectorType.MinIO}
+        onClick={() => console.log(ConnectorType.MinIO)}
       />,
     ],
     []
@@ -40,7 +41,7 @@ export function ConnectorCarousel() {
   );
 
   return (
-    <div className="flex items-center space-x-3">
+    <section className="flex items-center space-x-3">
       <ChevronButton
         type="left"
         className="-translate-y-2"
@@ -56,6 +57,6 @@ export function ConnectorCarousel() {
           startIdx + 4 < allConnectors.length && setStartIdx((_) => _ + 1)
         }
       />
-    </div>
+    </section>
   );
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { Header } from "@/components/atoms/Header";
+import { PageTitle } from "@/components/atoms/PageTitle";
 import { ConnectorButtonLabeled } from "@/components/molecules/ConnectorButtonLabeled";
 import { SearchBar } from "@/components/atoms/SearchBar";
 import { useState } from "react";
@@ -9,6 +9,8 @@ import { GitHubLink } from "@/components/molecules/GitHubLink";
 import { SparKaiKuLink } from "@/components/molecules/SparKaiKuLink";
 import { ChevronButton } from "@/components/atoms/ChevronButton";
 import { ConnectorCarousel } from "@/components/organisms/ConnectorCarousel";
+import { ConnectorType } from "@/helpers/ConnectorType";
+import { ConnectorPannel } from "@/components/organisms/ConnectorPannel";
 
 export default function Home() {
   const [value, setValue] = useState("");
@@ -17,46 +19,17 @@ export default function Home() {
       <SparKaiKuLink />
       <DockerHubLink />
       <GitHubLink />
-      <Header text="Connections (31/33)" />
-      <ChevronButton
-        type="left"
-        active={true}
-        onClick={() => console.log("Left")}
-      />
-      <ChevronButton
-        type="right"
-        active={false}
-        onClick={() => console.log("Right")}
-      />
-      <ConnectorButtonLabeled
-        type="PostgreSQL"
-        className="text-white"
-        onClick={() => console.log("PostgreSQL")}
-      />
-      <ConnectorButtonLabeled
-        type="MySQL"
-        className="text-white"
-        onClick={() => console.log("MySQL")}
-      />
-      <ConnectorButtonLabeled
-        type="MariaDB"
-        className="text-white"
-        onClick={() => console.log("MariaDB")}
-      />
-      <ConnectorButtonLabeled
-        type="MongoDB"
-        className="text-white"
-        onClick={() => console.log("MongoDB")}
-      />
-      <ConnectorButtonLabeled
-        type="MinIO"
-        className="text-white"
-        onClick={() => console.log("MinIO")}
-      />
+      <PageTitle text="Connections (31/33)" />
       <ConnectorCarousel />
       <SearchBar
         value={value}
         onChange={(event) => setValue(event.target.value)}
+      />
+      <ConnectorPannel
+        type={ConnectorType.PostgreSQL}
+        name="MyElephantConnection"
+        updatedAt=""
+        isUp={true}
       />
     </main>
   );
