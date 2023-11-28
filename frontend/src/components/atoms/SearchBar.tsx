@@ -9,7 +9,7 @@ export function SearchBar({
   onChange: ChangeEventHandler<HTMLInputElement>;
 }) {
   return (
-    <div className="relative flex items-center bg-neutral-300 opacity-90 h-7 rounded-full border-2 border-black">
+    <search className="relative flex items-center bg-neutral-300 opacity-90 h-7 rounded-full border-2 border-black">
       <Image
         src={`/icons/Search.webp`}
         width={16}
@@ -21,8 +21,8 @@ export function SearchBar({
         value={value}
         placeholder="Search"
         onChange={onChange}
-        className="bg-transparent translate-y-0.5 focus:outline-none w-full mx-2"
+        className="text-xs bg-transparent focus:outline-none mx-2"
       />
-    </div>
+    </search>
   );
 }

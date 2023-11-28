@@ -8,7 +8,7 @@ export function NextButton({
   return (
     <button
       onClick={onClick}
-      className="italic font-bold text-xs h-3 -translate-y-0.5"
+      className="font-bold text-xs h-3 -translate-y-0.5"
     >
       →
     </button>

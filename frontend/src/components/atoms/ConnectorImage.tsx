@@ -22,7 +22,7 @@ export function ConnectorImage({
       width={width}
       height={height}
       alt={type}
-      className={`m-auto max-w-min ${maxHeigthCSS}`}
+      className={`mx-auto max-w-min ${maxHeigthCSS}`}
     />
   );
 }

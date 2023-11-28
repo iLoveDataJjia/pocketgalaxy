@@ -6,8 +6,8 @@ export function SectionTitle({
   className?: string;
 }) {
   return (
-    <p className={"font-medium text-xs" + className ? ` ${className}` : ""}>
+    <h2 className={"font-medium text-xs" + (className ? ` ${className}` : "")}>
       {text}
-    </p>
+    </h2>
   );
 }
