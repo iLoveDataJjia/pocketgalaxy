@@ -1,5 +1,5 @@
 import { ChevronButton } from "@/components/atoms/ChevronButton";
-import { ConnectorButtonLabeled } from "@/components/molecules/ConnectorButtonLabeled";
+import { ConnectorButtonLabeled } from "@/components/molecules/ConnectorButton";
 import { useState, useMemo } from "react";
 import { ConnectorType } from "@/helpers/ConnectorType";
 

@@ -11,9 +11,12 @@ import { ConnectorType } from "@/helpers/ConnectorType";
 import { ConnectorPannel } from "@/components/organisms/ConnectorPannel";
 import moment from "moment";
 import { ConnectorEditingPannel } from "@/components/organisms/ConnectorEditingPannel";
+import { InputTextField } from "@/components/molecules/InputTextField";
+import { GeneralButton } from "@/components/atoms/GeneralButton";
 
 export default function Home() {
-  const [value, setValue] = useState("");
+  const [searchValue, setSearchValue] = useState("");
+  const [inputValue, setInputValue] = useState("");
   return (
     <main className="flex flex-col items-center space-y-4">
       <SparKaiKuLink />
@@ -22,8 +25,8 @@ export default function Home() {
       <PageTitle text="Connections (31/33)" />
       <ConnectorCarousel />
       <SearchBar
-        value={value}
-        onChange={(event) => setValue(event.target.value)}
+        value={searchValue}
+        onChange={(event) => setSearchValue(event.target.value)}
       />
       <div className="space-y-4">
         <ConnectorPannel
@@ -49,6 +52,18 @@ export default function Home() {
       <ConnectorEditingPannel
         type={ConnectorType.PostgreSQL}
         name="MyElephantConnection"
+      />
+      <InputTextField
+        label="Name"
+        isRequired={true}
+        value={inputValue}
+        onChange={(event) => setInputValue(event.target.value)}
+      />
+      <GeneralButton
+        text="Test connection"
+        color="get"
+        active={false}
+        onClick={() => console.log("Test connection")}
       />
     </main>
   );
