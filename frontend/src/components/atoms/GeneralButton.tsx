@@ -1,15 +1,13 @@
-import { MouseEventHandler } from "react";
-
 export function GeneralButton({
   text,
   color,
   active,
-  onClick,
+  formAction,
 }: {
   text: string;
   color: "post" | "get" | "put";
   active: boolean;
-  onClick: MouseEventHandler<HTMLButtonElement>;
+  formAction: (payload: FormData) => void;
 }) {
   const bgColor = (() => {
     switch (color) {
@@ -24,12 +22,12 @@ export function GeneralButton({
 
   return (
     <button
-      onClick={onClick}
       disabled={!active}
       className={
         "text-xs font-medium opacity-90 h-9 w-32 rounded-lg border-2 border-black" +
         (active ? ` ${bgColor}` : ` bg-transparent`)
       }
+      formAction={formAction}
     >
       {text}
     </button>

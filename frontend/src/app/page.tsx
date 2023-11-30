@@ -11,12 +11,10 @@ import { ConnectorType } from "@/helpers/ConnectorType";
 import { ConnectorPannel } from "@/components/organisms/ConnectorPannel";
 import moment from "moment";
 import { ConnectorEditingPannel } from "@/components/organisms/ConnectorEditingPannel";
-import { InputTextField } from "@/components/molecules/InputTextField";
-import { GeneralButton } from "@/components/atoms/GeneralButton";
+import { ConnectorForm } from "@/components/organisms/ConnectorForm";
 
 export default function Home() {
   const [searchValue, setSearchValue] = useState("");
-  const [inputValue, setInputValue] = useState("");
   return (
     <main className="flex flex-col items-center space-y-4">
       <SparKaiKuLink />
@@ -53,18 +51,7 @@ export default function Home() {
         type={ConnectorType.PostgreSQL}
         name="MyElephantConnection"
       />
-      <InputTextField
-        label="Name"
-        isRequired={true}
-        value={inputValue}
-        onChange={(event) => setInputValue(event.target.value)}
-      />
-      <GeneralButton
-        text="Test connection"
-        color="get"
-        active={false}
-        onClick={() => console.log("Test connection")}
-      />
+      <ConnectorForm />
     </main>
   );
 }
