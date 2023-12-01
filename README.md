@@ -1,4 +1,4 @@
-# SparKaiku
+# PocketGalaxy
 
 ## Design
 
@@ -51,13 +51,13 @@ Please install VSCode extensions:
 - Python
 - Pylance
 
-To install dependencies on a given `sparkaiku` Python environnement, from `./backend` run the command:
+To install dependencies on a given `pocketgalaxy` Python environnement, from `./backend` run the command:
 
 ```bash
-conda create --name sparkaiku --channel=conda-forge --file ./requirements.txt
+conda create --name pocketgalaxy --channel=conda-forge --file ./requirements.txt
 ```
 
-Runnable scripts are in `./backend` and need to be run using the newly created `sparkaiku` Python environnement. From `./backend`, run [main.py](.\backend\src\main.py).
+Runnable scripts are in `./backend` and need to be run using the newly created `pocketgalaxy` Python environnement. From `./backend`, run [main.py](.\backend\src\main.py).
 
 ## Others
 

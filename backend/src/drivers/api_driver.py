@@ -16,7 +16,7 @@ class ApiDriver:
         self.connections_rts = connections_rts
         self.env_loader_driver = env_loader_driver
 
-        self._app = FastAPI(title="SparKaiKu")
+        self._app = FastAPI(title="PocketGalaxy")
         self._app.include_router(self.connections_rts.router())
 
         @self._app.exception_handler(Exception)

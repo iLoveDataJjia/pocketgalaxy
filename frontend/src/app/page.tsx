@@ -1,23 +1,37 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { PageTitle } from "@/components/atoms/PageTitle";
 import { SearchBar } from "@/components/atoms/SearchBar";
 import { DockerHubLink } from "@/components/molecules/DockerHubLink";
 import { GitHubLink } from "@/components/molecules/GitHubLink";
-import { SparKaiKuLink } from "@/components/molecules/SparKaiKuLink";
+import { PocketGalaxyLink } from "@/components/molecules/PocketGalaxyLink";
 import { ConnectorCarousel } from "@/components/organisms/ConnectorCarousel";
 import { ConnectorType } from "@/helpers/ConnectorType";
 import { ConnectorPannel } from "@/components/organisms/ConnectorPannel";
 import moment from "moment";
 import { ConnectorEditingPannel } from "@/components/organisms/ConnectorEditingPannel";
 import { ConnectorForm } from "@/components/organisms/ConnectorForm";
+import toast, { Toaster, useToasterStore } from "react-hot-toast";
 
 export default function Home() {
   const [searchValue, setSearchValue] = useState("");
+  const notify = () => toast("Here is your toast.");
+
+  const { toasts } = useToasterStore();
+
+  const TOAST_LIMIT = 3;
+
+  useEffect(() => {
+    toasts
+      .filter((t) => t.visible) // Only consider visible toasts a
+      .filter((_, i) => i >= TOAST_LIMIT) // Is toast index over limit?
+      .forEach((t) => toast.dismiss(t.id)); // Dismiss – Use toast.remove(t.id) for no exit animation
+  }, [toasts]);
+
   return (
     <main className="flex flex-col items-center space-y-4">
-      <SparKaiKuLink />
+      <PocketGalaxyLink />
       <DockerHubLink />
       <GitHubLink />
       <PageTitle text="Connections (31/33)" />
@@ -52,6 +66,8 @@ export default function Home() {
         name="MyElephantConnection"
       />
       <ConnectorForm />
+      <Toaster position="top-center" />
+      <button onClick={notify}>Yoplay</button>
     </main>
   );
 }
