@@ -20,6 +20,7 @@ class ConnectionsRts:
     ) -> None:
         self.connections_usecase = connections_usecase
         self.db_driver = db_driver
+
         self._app = FastAPI()
 
         @self._app.get(
