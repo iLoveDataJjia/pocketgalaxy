@@ -1,7 +1,7 @@
 import { Routes, Route, BrowserRouter } from "react-router-dom";
-import Connections from "./app/connections";
-import ConnectionsCreate from "./app/connections/create";
-import ConnectionsUpdate from "./app/connections/update";
+import Connections from "./app/connections/page";
+import ConnectionsCreate from "./app/connections/create/page";
+import ConnectionsUpdate from "./app/connections/update/page";
 
 export default function App() {
   return (
