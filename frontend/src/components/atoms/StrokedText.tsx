@@ -6,7 +6,9 @@ interface Props {
 export function StrokedText({ text, className }: Props) {
   return (
     <span className={"relative" + (className ? ` ${className}` : "")}>
-      <span className="absolute">{text}</span>
+      <span className="absolute inset-0 flex items-center justify-center">
+        {text}
+      </span>
       <span className="select-none" style={{ WebkitTextStroke: "3px black" }}>
         {text}
       </span>

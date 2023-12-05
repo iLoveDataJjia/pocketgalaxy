@@ -28,7 +28,7 @@ export function AppLayout({ children, h1 }: Props) {
           <h1>
             <StrokedText text={h1} className="font-bold text-xl" />
           </h1>
-          <div>{children}</div>
+          <div className="px-4">{children}</div>
         </div>
       </div>
     </div>
