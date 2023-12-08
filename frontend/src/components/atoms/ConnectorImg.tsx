@@ -4,20 +4,21 @@ import MariaDB from "/connectors/MariaDB.webp";
 import MongoDB from "/connectors/MongoDB.webp";
 import MinIO from "/connectors/MinIO.webp";
 import { useMemo } from "react";
+import { Connector } from "../../helpers/Connector";
 
 interface Props {
-  connector: "PostgreSQL" | "MySQL" | "MariaDB" | "MongoDB" | "MinIO";
+  connector: Connector;
   className?: string;
 }
 
 export function ConnectorImg({ connector, className }: Props) {
   const convertToSrcPath = useMemo(
     () => ({
-      ["PostgreSQL"]: PostgreSQL,
-      ["MySQL"]: MySQL,
-      ["MariaDB"]: MariaDB,
-      ["MongoDB"]: MongoDB,
-      ["MinIO"]: MinIO,
+      [Connector.PostgreSQL]: PostgreSQL,
+      [Connector.MySQL]: MySQL,
+      [Connector.MariaDB]: MariaDB,
+      [Connector.MongoDB]: MongoDB,
+      [Connector.MinIO]: MinIO,
     }),
     []
   );

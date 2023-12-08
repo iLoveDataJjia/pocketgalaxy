@@ -1,9 +1,10 @@
 import { ConnectorImg } from "../atoms/ConnectorImg";
 import { BorderBox } from "../atoms/BorderBox";
 import { StrokedText } from "../atoms/StrokedText";
+import { Connector } from "../../helpers/Connector";
 
 interface Props {
-  connector: "PostgreSQL" | "MySQL" | "MariaDB" | "MongoDB" | "MinIO";
+  connector: Connector;
   className?: string;
   onClick?: React.MouseEventHandler;
 }
@@ -12,7 +13,7 @@ export function ConnectorButton({ connector, className, onClick }: Props) {
   return (
     <div
       className={
-        "flex flex-col space-y-1 items-center" +
+        "flex flex-col space-y-1 items-center w-16" +
         (className ? ` ${className}` : "")
       }
     >
