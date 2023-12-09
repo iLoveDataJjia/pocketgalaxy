@@ -6,11 +6,17 @@ import ConnectionsUpdate from "./app/connections/update/page";
 export default function App() {
   return (
     <main>
-      <BrowserRouter basename="/app">
+      <BrowserRouter>
         <Routes>
-          <Route path="/connections" element={<Connections />} />
-          <Route path="/connections/create" element={<ConnectionsCreate />} />
-          <Route path="/connections/update" element={<ConnectionsUpdate />} />
+          <Route path="/app/connections" element={<Connections />} />
+          <Route
+            path="/app/connections/create"
+            element={<ConnectionsCreate />}
+          />
+          <Route
+            path="/app/connections/update"
+            element={<ConnectionsUpdate />}
+          />
         </Routes>
       </BrowserRouter>
     </main>

@@ -10,10 +10,7 @@ export function SearchBar({
   onChange: ChangeEventHandler<HTMLInputElement>;
 }) {
   return (
-    <BorderBox
-      rounded="full"
-      className="bg-neutral-300 h-8 flex items-center w-64"
-    >
+    <BorderBox rounded="full" className="h-8 flex items-center w-64">
       <img
         src={`/icons/Search.webp`}
         alt="Search"

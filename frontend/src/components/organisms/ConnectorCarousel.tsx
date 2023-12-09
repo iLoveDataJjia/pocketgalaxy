@@ -30,7 +30,9 @@ export function ConnectorCarousel() {
         {connectors.map((conn) => (
           <ConnectorButton
             connector={conn}
-            onClick={() => navigate(`/connections/create?connector=${conn}`)}
+            onClick={() =>
+              navigate(`/app/connections/create?connector=${conn}`)
+            }
             key={conn}
           />
         ))}
