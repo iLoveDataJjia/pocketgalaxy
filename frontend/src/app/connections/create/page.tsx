@@ -7,6 +7,7 @@ import { useState } from "react";
 import { ConnectorImg } from "../../../components/atoms/ConnectorImg";
 import { useNavigate } from "react-router-dom";
 import { InputText } from "../../../components/molecules/InputText";
+import { Button } from "../../../components/molecules/Button";
 
 export default function Page() {
   const location = useLocation();
@@ -21,10 +22,10 @@ export default function Page() {
   const [connName, setConnName] = useState("");
   const desc = [connector.toString(), "Editing . . ."];
   const [host, setHost] = useState("");
-  const [port, setPort] = useState(5432);
+  const [port, setPort] = useState("");
   const [database, setDatabase] = useState("");
   const [user, setUser] = useState("");
-  const [password, setPassword] = useState(undefined);
+  const [password, setPassword] = useState("");
 
   return (
     <AppLayout h1={"Create new connection"}>
@@ -38,7 +39,7 @@ export default function Page() {
         }}
       />
       <ConnectorCarousel />
-      <div className="md:flex md:flex-wrap md:gap-x-4 md:gap-y-3">
+      <div className="md:flex md:flex-wrap md:gap-x-4 md:gap-y-2.5 max-md:space-y-2.5">
         <InputText
           type="text"
           label="Name"
@@ -80,6 +81,18 @@ export default function Page() {
           required={false}
           value={password}
           onChange={(event) => setPassword(event.target.value)}
+        />
+      </div>
+      <div className="flex md:space-x-4 max-md:justify-between">
+        <Button
+          label={"Test"}
+          color="sky"
+          onClick={() => console.log("Test")}
+        />
+        <Button
+          label={"Connect"}
+          color="emerald"
+          onClick={() => console.log("Connect")}
         />
       </div>
     </AppLayout>

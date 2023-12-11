@@ -40,6 +40,12 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
+To generate TypeScript endpoint definition from the backend OpenAPI:
+
+```bash
+npx openapi-typescript http://localhost:8000/openapi.json --output ./src/services/backend/endpoints.d.ts
+```
+
 ## Backend
 
 Please install [Miniconda](https://docs.conda.io/projects/miniconda/en/latest/index.html).

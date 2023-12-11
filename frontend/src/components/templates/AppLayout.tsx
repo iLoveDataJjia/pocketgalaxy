@@ -13,7 +13,7 @@ interface Props {
 export function AppLayout({ children, h1 }: Props) {
   return (
     <div
-      className={`bg-[url('/others/Wallpaper.webp')] bg-cover bg-center h-screen`}
+      className={`bg-[url('/others/Wallpaper.webp')] bg-cover bg-center min-h-screen`}
     >
       <Toaster position="top-center" />
       <div className="max-w-xs md:max-w-3xl mx-auto">

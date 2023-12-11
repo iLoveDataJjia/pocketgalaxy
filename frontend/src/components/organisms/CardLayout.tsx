@@ -26,7 +26,11 @@ Props) {
       className="w-64 h-32 pt-2 pb-1 px-3 flex flex-col justify-between"
     >
       <header className="flex w-3/5">
-        <Text text={title} className="font-semibold truncate" />
+        {title != "" ? (
+          <Text text={title} className="font-semibold truncate" />
+        ) : (
+          <Text text={"Empty"} className="font-semibold truncate opacity-25" /> // Placeholder
+        )}
       </header>
       <div className="flex items-center mx-3 space-x-4">
         <div className="w-14 h-14 flex items-center justify-center">

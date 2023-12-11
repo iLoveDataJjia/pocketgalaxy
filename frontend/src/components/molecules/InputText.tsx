@@ -5,7 +5,7 @@ interface Props {
   type: "text" | "password" | "number";
   label: string;
   required: boolean;
-  value: string;
+  value: string | number;
   onChange?: React.ChangeEventHandler<HTMLInputElement>;
 }
 
@@ -22,7 +22,7 @@ export function InputText({ type, label, required, value, onChange }: Props) {
           value={value}
           onChange={onChange}
           placeholder="Empty"
-          className="bg-transparent outline-none text-black h-8 w-64"
+          className="bg-transparent outline-none text-black h-8 w-64 hide-spinner"
         />
       </BorderBox>
     </div>

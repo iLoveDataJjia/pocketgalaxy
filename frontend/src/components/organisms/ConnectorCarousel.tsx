@@ -11,7 +11,6 @@ export function ConnectorCarousel() {
   const connectors = isMd
     ? Object.values(Connector)
     : Object.values(Connector).slice(cursorIdx - 1, cursorIdx + 2);
-
   const navigate = useNavigate();
 
   return (
