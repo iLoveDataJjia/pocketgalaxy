@@ -5,6 +5,7 @@ from adapters.routes.connections.connections_rts import (
 )
 from drivers.env_loader_driver import EnvLoaderDriver, env_laoder_driver_impl
 from fastapi import FastAPI, Request
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from helpers.backend_exception import ClientException, ServerException
 
@@ -18,6 +19,10 @@ class ApiDriver:
 
         self._app = FastAPI(title="PocketGalaxy")
         self._app.include_router(self.connections_rts.router())
+        if not self.env_loader_driver.prod_mode:
+            self._app.add_middleware(
+                CORSMiddleware, allow_origins=["http://localhost:5173"]
+            )
 
         @self._app.exception_handler(Exception)
         async def _(_: Request, e: Exception):

@@ -1,13 +1,14 @@
 import { AppLayout } from "../../../components/templates/AppLayout";
 import { useLocation } from "react-router-dom";
 import { Connector } from "../../../helpers/Connector";
-import { CardLayout } from "../../../components/organisms/CardLayout";
+import { CardLayout } from "../../../components/molecules/CardLayout";
 import { ConnectorCarousel } from "../../../components/organisms/ConnectorCarousel";
 import { useState } from "react";
 import { ConnectorImg } from "../../../components/atoms/ConnectorImg";
 import { useNavigate } from "react-router-dom";
 import { InputText } from "../../../components/molecules/InputText";
 import { Button } from "../../../components/molecules/Button";
+import { useStateConnector } from "../../../hooks/useStateConnector";
 
 export default function Page() {
   const location = useLocation();
@@ -19,20 +20,15 @@ export default function Page() {
   const Image = ({ className }: { className: string }) => (
     <ConnectorImg connector={connector} className={className} />
   );
-  const [connName, setConnName] = useState("");
-  const desc = [connector.toString(), "Editing . . ."];
-  const [host, setHost] = useState("");
-  const [port, setPort] = useState("");
-  const [database, setDatabase] = useState("");
-  const [user, setUser] = useState("");
-  const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
+  const [connectorState, setConnectorState] = useStateConnector(connector);
 
   return (
     <AppLayout h1={"Create new connection"}>
       <CardLayout
-        title={connName}
+        title={name}
         Img={Image}
-        desc={desc}
+        desc={[connector, "Editing . . ."]}
         botLeft={{
           text: "← Tap to go back",
           onClick: () => navigate("/app/connections"),
@@ -59,7 +55,7 @@ export default function Page() {
           label="Port"
           required={true}
           value={port}
-          onChange={(event) => setPort(event.target.value)}
+          onChange={(event) => setPort(parseInt(event.target.value))}
         />
         <InputText
           type="text"
@@ -87,7 +83,7 @@ export default function Page() {
         <Button
           label={"Test"}
           color="sky"
-          onClick={() => console.log("Test")}
+          onClick={() => console.log(connector)}
         />
         <Button
           label={"Connect"}
