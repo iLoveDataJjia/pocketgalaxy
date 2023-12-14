@@ -2,7 +2,7 @@ import { Connector } from "../helpers/Connector";
 import { useState } from "react";
 import { components } from "../services/backend/endpoints";
 
-export function useStateConnector(connector: Connector) {
+export function useStateConnectorFields(connector: Connector) {
   return {
     [Connector.PostgreSQL]: useState<
       components["schemas"]["PostgreSqlInfoIDto"]

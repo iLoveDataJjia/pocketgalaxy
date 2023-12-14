@@ -51,7 +51,7 @@ class ApiDriver:
         else:
             return uvicorn.run(
                 app="drivers.api_driver:_",
-                host="0.0.0.0",
+                host="localhost",
                 port=self.env_loader_driver.api_port,
                 log_level="info",
                 access_log=False,
