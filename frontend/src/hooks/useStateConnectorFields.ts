@@ -2,7 +2,7 @@ import { Connector } from "../helpers/Connector";
 import { useState } from "react";
 import { components } from "../services/backend/endpoints";
 
-export function useStateConnectorFields(connector: Connector) {
+export function useStateAllConnectorFields() {
   return {
     [Connector.PostgreSQL]: useState<
       components["schemas"]["PostgreSqlInfoIDto"]
@@ -46,5 +46,5 @@ export function useStateConnectorFields(connector: Connector) {
       user: "",
       password: null,
     }),
-  }[connector];
+  };
 }

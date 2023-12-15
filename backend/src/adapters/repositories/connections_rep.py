@@ -109,7 +109,6 @@ class MySqlRow(ConnectionRow):
     id: Mapped[int] = mapped_column(ForeignKey("connections.id"), primary_key=True)
     host: Mapped[str]
     port: Mapped[int]
-    database: Mapped[str]
     user: Mapped[str]
     password: Mapped[Optional[str]]
 
@@ -124,7 +123,6 @@ class MySqlRow(ConnectionRow):
             is_up=entity.is_up,
             host=entity.host,
             port=entity.port,
-            database=entity.database,
             user=entity.user,
             password=entity.password,
         )
@@ -135,7 +133,6 @@ class MySqlRow(ConnectionRow):
             self.is_up,
             self.host,
             self.port,
-            self.database,
             self.user,
             self.password,
         )
@@ -150,7 +147,6 @@ class MySqlRow(ConnectionRow):
         self.is_up = entity.is_up
         self.host = entity.host
         self.port = entity.port
-        self.database = entity.database
         self.user = entity.user
         self.password = entity.password
 

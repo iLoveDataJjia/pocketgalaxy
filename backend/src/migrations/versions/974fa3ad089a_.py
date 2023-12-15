@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: 990f4ccc2103
+Revision ID: 974fa3ad089a
 Revises: 
-Create Date: 2023-11-18 13:14:22.526257
+Create Date: 2023-12-15 07:51:23.407390
 
 """
 from typing import Sequence, Union
@@ -12,7 +12,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision: str = '990f4ccc2103'
+revision: str = '974fa3ad089a'
 down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -24,6 +24,7 @@ def upgrade() -> None:
     sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
     sa.Column('name', sa.String(), nullable=False),
     sa.Column('updated_at', sa.DateTime(), nullable=False),
+    sa.Column('is_up', sa.Boolean(), nullable=False),
     sa.Column('type', sa.String(), nullable=False),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('name')
@@ -32,7 +33,6 @@ def upgrade() -> None:
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('host', sa.String(), nullable=False),
     sa.Column('port', sa.Integer(), nullable=False),
-    sa.Column('database', sa.String(), nullable=False),
     sa.Column('user', sa.String(), nullable=False),
     sa.Column('password', sa.String(), nullable=True),
     sa.ForeignKeyConstraint(['id'], ['connections.id'], ),

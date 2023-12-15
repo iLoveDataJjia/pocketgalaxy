@@ -95,14 +95,12 @@ class MySqlEnt(ConnectionEnt):
         is_up: bool,
         host: str,
         port: int,
-        database: str,
         user: str,
         password: str | None,
     ) -> None:
         super().__init__("mysql", name, is_up)
         self.host = host
         self.port = port
-        self.database = database
         self.user = user
         self.password = password
 
@@ -115,7 +113,6 @@ class MySqlEnt(ConnectionEnt):
             is_up,
             mysql_info.host,
             mysql_info.port,
-            mysql_info.database,
             mysql_info.user,
             mysql_info.password,
         )
@@ -127,7 +124,6 @@ class MySqlEnt(ConnectionEnt):
                 type=self.type,
                 host=self.host,
                 port=self.port,
-                database=self.database,
                 user=self.user,
                 password=self.password,
             ),

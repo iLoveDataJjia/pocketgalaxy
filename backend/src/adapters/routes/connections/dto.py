@@ -17,7 +17,6 @@ class MySqlInfoIDto(BaseModel):
     type: Literal["mysql"]
     host: str
     port: int
-    database: str
     user: str
     password: str | None
 

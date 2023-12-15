@@ -18,11 +18,15 @@ class ApiDriver:
         self.env_loader_driver = env_loader_driver
 
         self._app = FastAPI(title="PocketGalaxy")
-        self._app.include_router(self.connections_rts.router())
         if not self.env_loader_driver.prod_mode:
             self._app.add_middleware(
-                CORSMiddleware, allow_origins=["http://localhost:5173"]
+                CORSMiddleware,
+                allow_origins=["*"],
+                allow_credentials=True,
+                allow_methods=["*"],
+                allow_headers=["*"],
             )
+        self._app.include_router(self.connections_rts.router())
 
         @self._app.exception_handler(Exception)
         async def _(_: Request, e: Exception):
@@ -43,7 +47,7 @@ class ApiDriver:
         if self.env_loader_driver.prod_mode:
             return uvicorn.run(
                 app=self._app,
-                host="0.0.0.0",
+                host="localhost",
                 port=self.env_loader_driver.api_port,
                 log_level="info",
                 access_log=False,

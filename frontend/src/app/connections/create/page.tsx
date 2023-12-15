@@ -7,8 +7,11 @@ import { useState } from "react";
 import { ConnectorImg } from "../../../components/atoms/ConnectorImg";
 import { useNavigate } from "react-router-dom";
 import { Button } from "../../../components/molecules/Button";
-import { useStateConnectorFields } from "../../../hooks/useStateConnectorFields";
+import { useStateAllConnectorFields } from "../../../hooks/useStateConnectorFields";
 import { ConnectorForm } from "../../../components/organisms/ConnectorForm";
+import { useMutation } from "@tanstack/react-query";
+import { backend } from "../../../services/backend";
+import { paths } from "../../../services/backend/endpoints";
 
 export default function Page() {
   const location = useLocation();
@@ -18,13 +21,31 @@ export default function Page() {
   const connector = Connector[foundConnector as keyof typeof Connector];
 
   const [name, setName] = useState("");
-  const [connectorFields, setConnectorFields] =
-    useStateConnectorFields(connector);
-
-  switch (connectorFieldsUseState[0].type) {
-    case "postgresql":
-      return { a: connectorFieldsUseState[1] };
-  }
+  const allConnectorFieldsState = useStateAllConnectorFields();
+  const { mutate: testStatus, data: isUp } = useMutation({
+    mutationFn: (
+      payload: paths["/connections/test-status"]["post"]["requestBody"]["content"]["application/json"]
+    ) => {
+      return backend.post<
+        paths["/connections/test-status"]["post"]["responses"]["200"]["content"]["application/json"]
+      >("/connections/test-status", payload);
+    },
+  });
+  const {
+    mutate: createConnection,
+    data: connections,
+    error,
+  } = useMutation({
+    mutationFn: (
+      payload: paths["/connections"]["post"]["requestBody"]["content"]["application/json"]
+    ) => {
+      return backend.post<
+        paths["/connections"]["post"]["responses"]["200"]["content"]["application/json"]
+      >("/connections", payload);
+    },
+  });
+  console.log(connections);
+  console.log(error?.message);
 
   return (
     <AppLayout h1={"Create new connection"}>
@@ -43,19 +64,24 @@ export default function Page() {
       <ConnectorForm
         name={name}
         setName={setName}
-        connectorFields={connectorFields}
-        setConnectorFields={(event) => setConnectorFields(event)}
+        connector={connector}
+        allConnectorFieldsState={allConnectorFieldsState}
       />
       <div className="flex md:space-x-4 max-md:justify-between">
         <Button
           label={"Test"}
           color="sky"
-          onClick={() => console.log(connector)}
+          onClick={() => testStatus(allConnectorFieldsState[connector][0])}
         />
         <Button
           label={"Connect"}
           color="emerald"
-          onClick={() => console.log("Connect")}
+          onClick={() =>
+            createConnection({
+              name: name,
+              connector_info: allConnectorFieldsState[connector][0],
+            })
+          }
         />
       </div>
     </AppLayout>
