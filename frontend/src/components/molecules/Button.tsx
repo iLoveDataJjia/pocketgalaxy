@@ -8,7 +8,7 @@ interface Props {
 }
 
 export function Button({ label, color, onClick }: Props) {
-  const convertColorToBgColorCSS = useMemo(
+  const convertColorToCSS = useMemo(
     () => ({
       ["emerald"]: "bg-emerald-500",
       ["sky"]: "bg-sky-500",
@@ -18,7 +18,7 @@ export function Button({ label, color, onClick }: Props) {
     []
   );
 
-  const bgColorCSS = convertColorToBgColorCSS[color];
+  const bgColorCSS = convertColorToCSS[color];
   return (
     <button onClick={onClick}>
       <BorderBox

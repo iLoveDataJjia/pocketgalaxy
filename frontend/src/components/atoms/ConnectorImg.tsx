@@ -22,8 +22,8 @@ export function ConnectorImg({ connector, className }: Props) {
     }),
     []
   );
-  const srcPath = convertToSrcPath[connector];
 
+  const srcPath = convertToSrcPath[connector];
   return (
     <img
       src={srcPath}

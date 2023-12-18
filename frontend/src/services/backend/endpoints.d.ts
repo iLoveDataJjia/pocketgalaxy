@@ -83,8 +83,6 @@ export interface components {
       host: string;
       /** Port */
       port: number;
-      /** Database */
-      database: string;
       /** User */
       user: string;
       /** Password */

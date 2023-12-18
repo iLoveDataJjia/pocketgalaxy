@@ -8,11 +8,11 @@ interface Props {
 }
 
 export function BorderBox({ children, rounded, color, className }: Props) {
-  const convertToCSS = useMemo(
+  const convertRoundedToCSS = useMemo(
     () => ({ xl: "rounded-xl", full: "rounded-full" }),
     []
   );
-  const convertColorToBgColorCSS = useMemo(
+  const convertColorToCSS = useMemo(
     () => ({
       ["emerald"]: "bg-emerald-500",
       ["sky"]: "bg-sky-500",
@@ -22,8 +22,8 @@ export function BorderBox({ children, rounded, color, className }: Props) {
     []
   );
 
-  const roundedCSS = convertToCSS[rounded];
-  const bgColorCSS = color ? convertColorToBgColorCSS[color] : "bg-neutral-300";
+  const roundedCSS = convertRoundedToCSS[rounded];
+  const bgColorCSS = color ? convertColorToCSS[color] : "bg-neutral-300";
   return (
     <div
       className={

@@ -6,13 +6,13 @@ import { Connector } from "../../helpers/Connector";
 import { useNavigate } from "react-router-dom";
 
 export function ConnectorCarousel() {
+  const navigate = useNavigate();
   const { isMd } = useViewportSize();
   const [cursorIdx, setCursorIdx] = useState(1);
+
   const connectors = isMd
     ? Object.values(Connector)
     : Object.values(Connector).slice(cursorIdx - 1, cursorIdx + 2);
-  const navigate = useNavigate();
-
   return (
     <div className="relative flex">
       <button

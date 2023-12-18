@@ -30,15 +30,25 @@ class ApiDriver:
 
         @self._app.exception_handler(Exception)
         async def _(_: Request, e: Exception):
+            headers = (
+                {
+                    "access-control-allow-credentials": "true",
+                    "access-control-allow-origin": "*",
+                }
+                if not self.env_loader_driver.prod_mode
+                else {}
+            )
             if isinstance(e, ClientException):
                 return JSONResponse(
                     status_code=400,
                     content={"detail": e.args[0]},
+                    headers=headers,
                 )
             elif isinstance(e, ServerException):
                 return JSONResponse(
                     status_code=500,
                     content={"detail": e.args[0]},
+                    headers=headers,
                 )
             else:
                 raise e

@@ -12,41 +12,46 @@ import { ConnectorForm } from "../../../components/organisms/ConnectorForm";
 import { useMutation } from "@tanstack/react-query";
 import { backend } from "../../../services/backend";
 import { paths } from "../../../services/backend/endpoints";
+import { useToaster } from "../../../hooks/useToaster";
 
 export default function Page() {
   const location = useLocation();
   const navigate = useNavigate();
-  const foundConnector = new URLSearchParams(location.search).get("connector");
-  if (!foundConnector) navigate("/app/connections");
-  const connector = Connector[foundConnector as keyof typeof Connector];
-
   const [name, setName] = useState("");
   const allConnectorFieldsState = useStateAllConnectorFields();
   const { mutate: testStatus, data: isUp } = useMutation({
     mutationFn: (
       payload: paths["/connections/test-status"]["post"]["requestBody"]["content"]["application/json"]
     ) => {
-      return backend.post<
-        paths["/connections/test-status"]["post"]["responses"]["200"]["content"]["application/json"]
-      >("/connections/test-status", payload);
+      return backend
+        .post<
+          paths["/connections/test-status"]["post"]["responses"]["200"]["content"]["application/json"]
+        >("/connections/test-status", payload)
+        .then((_) => _.data);
     },
   });
-  const {
-    mutate: createConnection,
-    data: connections,
-    error,
-  } = useMutation({
+  const { mutate: createConnection, data: connections } = useMutation({
     mutationFn: (
       payload: paths["/connections"]["post"]["requestBody"]["content"]["application/json"]
     ) => {
-      return backend.post<
-        paths["/connections"]["post"]["responses"]["200"]["content"]["application/json"]
-      >("/connections", payload);
+      return backend
+        .post<
+          paths["/connections"]["post"]["responses"]["200"]["content"]["application/json"]
+        >("/connections", payload)
+        .then((_) => _.data);
     },
   });
-  console.log(connections);
-  console.log(error?.message);
 
+  function extractConnectorFromURLParams() {
+    const foundConnector = new URLSearchParams(location.search).get(
+      "connector"
+    );
+    if (!foundConnector) navigate("/app/connections");
+    return Connector[foundConnector as keyof typeof Connector];
+  }
+
+  const connector = extractConnectorFromURLParams();
+  const { notify } = useToaster();
   return (
     <AppLayout h1={"Create new connection"}>
       <CardLayout

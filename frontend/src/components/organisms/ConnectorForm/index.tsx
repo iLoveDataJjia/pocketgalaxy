@@ -48,7 +48,7 @@ export function ConnectorForm({
   connector,
   allConnectorFieldsState,
 }: Props) {
-  const fields = (() => {
+  const buildConnectorFields = () => {
     switch (connector) {
       case Connector.PostgreSQL:
         return (
@@ -86,8 +86,9 @@ export function ConnectorForm({
           />
         );
     }
-  })();
+  };
 
+  const fields = buildConnectorFields();
   return (
     <form className="md:flex md:flex-wrap md:gap-x-4 md:gap-y-2.5 max-md:space-y-2.5">
       <InputText

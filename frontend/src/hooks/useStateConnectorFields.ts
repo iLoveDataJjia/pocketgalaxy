@@ -18,7 +18,6 @@ export function useStateAllConnectorFields() {
       type: "mysql",
       host: "",
       port: 3306,
-      database: "",
       user: "",
       password: null,
     }),
