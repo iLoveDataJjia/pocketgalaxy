@@ -7,12 +7,12 @@ from drivers.env_loader_driver import EnvLoaderDriver, env_laoder_driver_impl
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
-from helpers.backend_exception import ClientException, ServerException
+from helpers.backend_exception import BadRequestException
 
 
 class ApiDriver:
     def __init__(
-        self, connections_rts: ConnectionsRts, env_loader_driver: EnvLoaderDriver
+        self, env_loader_driver: EnvLoaderDriver, connections_rts: ConnectionsRts
     ) -> None:
         self.connections_rts = connections_rts
         self.env_loader_driver = env_loader_driver
@@ -38,20 +38,26 @@ class ApiDriver:
                 if not self.env_loader_driver.prod_mode
                 else {}
             )
-            if isinstance(e, ClientException):
+            if isinstance(e, BadRequestException):
                 return JSONResponse(
                     status_code=400,
                     content={"detail": e.args[0]},
                     headers=headers,
                 )
-            elif isinstance(e, ServerException):
+            elif not self.env_loader_driver.prod_mode:
                 return JSONResponse(
                     status_code=500,
                     content={"detail": e.args[0]},
                     headers=headers,
                 )
             else:
-                raise e
+                return JSONResponse(
+                    status_code=500,
+                    content={
+                        "detail": "Please try again later. If the issue persists, contact support."
+                    },
+                    headers=headers,
+                )
 
     def run(self) -> None:
         if self.env_loader_driver.prod_mode:
@@ -74,5 +80,5 @@ class ApiDriver:
             )
 
 
-api_driver_impl = ApiDriver(connections_rts_impl, env_laoder_driver_impl)
+api_driver_impl = ApiDriver(env_laoder_driver_impl, connections_rts_impl)
 _ = None if env_laoder_driver_impl.prod_mode else api_driver_impl._app

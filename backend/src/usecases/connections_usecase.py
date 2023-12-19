@@ -10,7 +10,7 @@ from adapters.routes.connections.dto import (
 from drivers.services.mysql_driver import MySqlDriver, mysql_driver_impl
 from drivers.services.postgresql_driver import PostgreSqlDriver, postgresql_driver_impl
 from entities.connection_ent import ConnectionEnt
-from helpers.backend_exception import ClientException
+from helpers.backend_exception import BadRequestException
 from sqlalchemy.orm import Session
 
 
@@ -73,7 +73,7 @@ class ConnectionsUseCase:
 
     def _raiseUnlessConnectionIsUp(self, connector_info: ConnectorInfoIDto) -> None:
         if not self.test(connector_info).is_up:
-            raise ClientException(
+            raise BadRequestException(
                 "Your connection is currently unavailable. Please ensure it is operational before proceeding."
             )
 

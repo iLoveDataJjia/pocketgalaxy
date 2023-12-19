@@ -11,16 +11,16 @@ class DbDriver:
     def __init__(self, env_loader_driver: EnvLoaderDriver) -> None:
         self.env_loader_driver = env_loader_driver
 
-        config = configparser.ConfigParser()
-        config.read("alembic.ini")
-        self._session = Session(create_engine(config["alembic"]["sqlalchemy.url"]))
-
     class Base(DeclarativeBase):
         pass
 
     @contextmanager
     def get_session(self) -> Generator[Session, None, None]:
-        with self._session as session, session.begin():
+        config = configparser.ConfigParser()
+        config.read("alembic.ini")
+        with Session(
+            create_engine(config["alembic"]["sqlalchemy.url"])
+        ) as session, session.begin():
             yield session
 
     def migrate(self) -> None:

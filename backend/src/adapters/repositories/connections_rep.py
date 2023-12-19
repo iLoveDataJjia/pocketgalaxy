@@ -5,8 +5,8 @@ from drivers.db_driver import db_driver_impl
 from entities.connection_ent import ConnectionEnt, MySqlEnt, PostgreSqlEnt
 from helpers.backend_exception import (
     AbstractMethodException,
-    ClientException,
-    ServerException,
+    BadRequestException,
+    ServerInternalErrorException,
 )
 from sqlalchemy import ForeignKey, select
 from sqlalchemy.orm import Mapped, Session, mapped_column, selectin_polymorphic
@@ -34,7 +34,7 @@ class ConnectionRow(db_driver_impl.Base):
         elif isinstance(entity, MySqlEnt):
             return MySqlRow.from_ent(entity)
         else:
-            raise ServerException(
+            raise ServerInternalErrorException(
                 f"Encountered an unexpected entity of type {type(entity)}."
             )
 
@@ -45,7 +45,7 @@ class ConnectionRow(db_driver_impl.Base):
         raise AbstractMethodException
 
     def _raiseCrossConnectionTypeUpdate(self) -> None:
-        raise ClientException(
+        raise BadRequestException(
             "Apologies, the system doesn't allow updates across different connection types. "
             + "To ensure smooth operations, updates should be made within the same connection type."
         )
@@ -186,7 +186,7 @@ class ConnectionsRep:
         if row:
             return row
         else:
-            raise ClientException(
+            raise BadRequestException(
                 f"The connection associated with the provided ID ({connection_id}) does not exist."
             )
 

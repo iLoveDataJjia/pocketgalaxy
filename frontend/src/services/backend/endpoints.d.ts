@@ -34,6 +34,11 @@ export type webhooks = Record<string, never>;
 
 export interface components {
   schemas: {
+    /** BadRequestODto */
+    BadRequestODto: {
+      /** Detail */
+      detail: string;
+    };
     /** ConnectionIDto */
     ConnectionIDto: {
       /** Name */
@@ -71,6 +76,11 @@ export interface components {
     HTTPValidationError: {
       /** Detail */
       detail?: components["schemas"]["ValidationError"][];
+    };
+    /** InternalServerErrorODto */
+    InternalServerErrorODto: {
+      /** Detail */
+      detail: string;
     };
     /** MySqlInfoIDto */
     MySqlInfoIDto: {
@@ -142,6 +152,18 @@ export interface operations {
           "application/json": components["schemas"]["ConnectionODto"][];
         };
       };
+      /** @description Bad Request */
+      400: {
+        content: {
+          "application/json": components["schemas"]["BadRequestODto"];
+        };
+      };
+      /** @description Internal Server Error */
+      500: {
+        content: {
+          "application/json": components["schemas"]["InternalServerErrorODto"];
+        };
+      };
     };
   };
   /** Create a connection */
@@ -158,10 +180,22 @@ export interface operations {
           "application/json": components["schemas"]["ConnectionODto"][];
         };
       };
+      /** @description Bad Request */
+      400: {
+        content: {
+          "application/json": components["schemas"]["BadRequestODto"];
+        };
+      };
       /** @description Validation Error */
       422: {
         content: {
           "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+      /** @description Internal Server Error */
+      500: {
+        content: {
+          "application/json": components["schemas"]["InternalServerErrorODto"];
         };
       };
     };
@@ -182,10 +216,22 @@ export interface operations {
           "application/json": components["schemas"]["TestStatusODto"];
         };
       };
+      /** @description Bad Request */
+      400: {
+        content: {
+          "application/json": components["schemas"]["BadRequestODto"];
+        };
+      };
       /** @description Validation Error */
       422: {
         content: {
           "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+      /** @description Internal Server Error */
+      500: {
+        content: {
+          "application/json": components["schemas"]["InternalServerErrorODto"];
         };
       };
     };
@@ -209,10 +255,22 @@ export interface operations {
           "application/json": components["schemas"]["ConnectionODto"][];
         };
       };
+      /** @description Bad Request */
+      400: {
+        content: {
+          "application/json": components["schemas"]["BadRequestODto"];
+        };
+      };
       /** @description Validation Error */
       422: {
         content: {
           "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+      /** @description Internal Server Error */
+      500: {
+        content: {
+          "application/json": components["schemas"]["InternalServerErrorODto"];
         };
       };
     };
@@ -231,10 +289,22 @@ export interface operations {
           "application/json": components["schemas"]["ConnectionODto"][];
         };
       };
+      /** @description Bad Request */
+      400: {
+        content: {
+          "application/json": components["schemas"]["BadRequestODto"];
+        };
+      };
       /** @description Validation Error */
       422: {
         content: {
           "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+      /** @description Internal Server Error */
+      500: {
+        content: {
+          "application/json": components["schemas"]["InternalServerErrorODto"];
         };
       };
     };
@@ -253,10 +323,22 @@ export interface operations {
           "application/json": components["schemas"]["TestStatusODto"];
         };
       };
+      /** @description Bad Request */
+      400: {
+        content: {
+          "application/json": components["schemas"]["BadRequestODto"];
+        };
+      };
       /** @description Validation Error */
       422: {
         content: {
           "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+      /** @description Internal Server Error */
+      500: {
+        content: {
+          "application/json": components["schemas"]["InternalServerErrorODto"];
         };
       };
     };
@@ -275,10 +357,22 @@ export interface operations {
           "application/json": components["schemas"]["CountDataFramesODto"];
         };
       };
+      /** @description Bad Request */
+      400: {
+        content: {
+          "application/json": components["schemas"]["BadRequestODto"];
+        };
+      };
       /** @description Validation Error */
       422: {
         content: {
           "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+      /** @description Internal Server Error */
+      500: {
+        content: {
+          "application/json": components["schemas"]["InternalServerErrorODto"];
         };
       };
     };

@@ -1,9 +1,9 @@
-import { Toaster } from "react-hot-toast";
 import { ReactNode } from "react";
 import { PocketGalaxyLink } from "../organisms/PocketGalaxyLink";
 import { GitHubLink } from "../organisms/GitHubLink";
 import { DockerHubLink } from "../organisms/DockerHubLink";
 import { StrokedText } from "../atoms/StrokedText";
+import { Toaster } from "react-hot-toast";
 
 interface Props {
   children: ReactNode;

@@ -34,7 +34,7 @@ export function Toaster({ text, status }: Props) {
   const textStatus = convertStatusToPrefix[status];
   return (
     <BorderBox rounded="xl" color={bgColorCSS}>
-      <div className="flex justify-center items-center px-5 pt-1 pb-0.5 space-x-1.5">
+      <div className="flex justify-center items-center px-4 pt-1 pb-0.5 space-x-2">
         <Text text={textStatus} className="font-semibold" />
         <Text text={text} />
       </div>

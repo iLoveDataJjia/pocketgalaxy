@@ -10,7 +10,7 @@ import { Button } from "../../../components/molecules/Button";
 import { useStateAllConnectorFields } from "../../../hooks/useStateConnectorFields";
 import { ConnectorForm } from "../../../components/organisms/ConnectorForm";
 import { useMutation } from "@tanstack/react-query";
-import { backend } from "../../../services/backend";
+import { useBackend } from "../../../services/backend";
 import { paths } from "../../../services/backend/endpoints";
 import { useToaster } from "../../../hooks/useToaster";
 
@@ -19,6 +19,7 @@ export default function Page() {
   const navigate = useNavigate();
   const [name, setName] = useState("");
   const allConnectorFieldsState = useStateAllConnectorFields();
+  const { backend } = useBackend();
   const { mutate: testStatus, data: isUp } = useMutation({
     mutationFn: (
       payload: paths["/connections/test-status"]["post"]["requestBody"]["content"]["application/json"]
@@ -51,7 +52,6 @@ export default function Page() {
   }
 
   const connector = extractConnectorFromURLParams();
-  const { notify } = useToaster();
   return (
     <AppLayout h1={"Create new connection"}>
       <CardLayout
