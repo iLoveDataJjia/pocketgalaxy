@@ -73,9 +73,7 @@ class ConnectionsUseCase:
 
     def _raiseUnlessConnectionIsUp(self, connector_info: ConnectorInfoIDto) -> None:
         if not self.test(connector_info).is_up:
-            raise BadRequestException(
-                "Your connection is currently unavailable. Please ensure it is operational before proceeding."
-            )
+            raise BadRequestException("Connection's down.")
 
 
 connections_usecase_impl = ConnectionsUseCase(
