@@ -12,7 +12,8 @@ import { ConnectorForm } from "../../../components/organisms/ConnectorForm";
 import { useMutation } from "@tanstack/react-query";
 import { useBackend } from "../../../services/backend";
 import { paths } from "../../../services/backend/endpoints";
-import { useToaster } from "../../../hooks/useToaster";
+import { Text } from "../../../components/atoms/Text";
+import { LoadingText } from "../../../components/atoms/LoadingText";
 
 export default function Page() {
   const location = useLocation();
@@ -20,7 +21,11 @@ export default function Page() {
   const [name, setName] = useState("");
   const allConnectorFieldsState = useStateAllConnectorFields();
   const { backend } = useBackend();
-  const { mutate: testStatus, data: isUp } = useMutation({
+  const {
+    mutate: testStatus,
+    data: isUp,
+    isPending: isCreating,
+  } = useMutation({
     mutationFn: (
       payload: paths["/connections/test-status"]["post"]["requestBody"]["content"]["application/json"]
     ) => {
@@ -31,7 +36,11 @@ export default function Page() {
         .then((_) => _.data);
     },
   });
-  const { mutate: createConnection, data: connections } = useMutation({
+  const {
+    mutate: createConnection,
+    data: connections,
+    isPending: isTesting,
+  } = useMutation({
     mutationFn: (
       payload: paths["/connections"]["post"]["requestBody"]["content"]["application/json"]
     ) => {
@@ -59,7 +68,7 @@ export default function Page() {
         Img={({ className }: { className: string }) => (
           <ConnectorImg connector={connector} className={className} />
         )}
-        desc={[connector, "Editing . . ."]}
+        desc={[<Text text={connector} />, <LoadingText text={"Editing"} />]}
         botLeft={{
           text: "← Tap to go back",
           onClick: () => navigate("/app/connections"),
@@ -72,15 +81,19 @@ export default function Page() {
         connector={connector}
         allConnectorFieldsState={allConnectorFieldsState}
       />
-      <div className="flex md:space-x-4 max-md:justify-between">
+      <div className="flex md:space-x-4 max-md:justify-between py-2">
         <Button
           label={"Test"}
           color="sky"
+          loading={isCreating}
+          disabled={isTesting}
           onClick={() => testStatus(allConnectorFieldsState[connector][0])}
         />
         <Button
           label={"Connect"}
           color="emerald"
+          loading={isTesting}
+          disabled={isCreating}
           onClick={() =>
             createConnection({
               name: name,

@@ -1,12 +1,13 @@
 import { BorderBox } from "../atoms/BorderBox";
 import { Text } from "../atoms/Text";
+import React from "react";
 
 interface Props {
   title: string;
   // onRefresh?: React.MouseEventHandler;
   // onClose?: React.MouseEventHandler;
   Img: ({ className }: { className: string }) => JSX.Element;
-  desc: string[];
+  desc: JSX.Element[];
   botLeft?: { text: string; onClick?: React.MouseEventHandler };
   // botRight?: { text: string; onClick?: React.MouseEventHandler };
 }
@@ -39,9 +40,7 @@ Props) {
         <div className="flex flex-col text-sm">
           {desc
             .filter((_, idx) => idx <= 2)
-            .map((text, idx) => (
-              <Text text={text} key={idx} />
-            ))}
+            .map((jsx, idx) => React.cloneElement(jsx, { key: idx }))}
         </div>
       </div>
       <footer>
