@@ -96,7 +96,7 @@ export interface components {
       /** User */
       user: string;
       /** Password */
-      password: string | null;
+      password: string;
     };
     /** PostgreSqlInfoIDto */
     PostgreSqlInfoIDto: {
@@ -130,6 +130,52 @@ export interface components {
       /** Error Type */
       type: string;
     };
+    /** OKODto */
+    adapters__controllers__helpers__response_helper__ResponseHelper__response_model_of___locals___OKODto__1: {
+      /** Detail */
+      detail: string | null;
+      /** Response */
+      response: components["schemas"]["ConnectionODto"][];
+    };
+    /** OKODto */
+    adapters__controllers__helpers__response_helper__ResponseHelper__response_model_of___locals___OKODto__2: {
+      /** Detail */
+      detail: string | null;
+      /** Response */
+      response: components["schemas"]["ConnectionODto"][];
+    };
+    /** OKODto */
+    adapters__controllers__helpers__response_helper__ResponseHelper__response_model_of___locals___OKODto__3: {
+      /** Detail */
+      detail: string | null;
+      response: components["schemas"]["TestStatusODto"];
+    };
+    /** OKODto */
+    adapters__controllers__helpers__response_helper__ResponseHelper__response_model_of___locals___OKODto__4: {
+      /** Detail */
+      detail: string | null;
+      /** Response */
+      response: components["schemas"]["ConnectionODto"][];
+    };
+    /** OKODto */
+    adapters__controllers__helpers__response_helper__ResponseHelper__response_model_of___locals___OKODto__5: {
+      /** Detail */
+      detail: string | null;
+      /** Response */
+      response: components["schemas"]["ConnectionODto"][];
+    };
+    /** OKODto */
+    adapters__controllers__helpers__response_helper__ResponseHelper__response_model_of___locals___OKODto__6: {
+      /** Detail */
+      detail: string | null;
+      response: components["schemas"]["TestStatusODto"];
+    };
+    /** OKODto */
+    adapters__controllers__helpers__response_helper__ResponseHelper__response_model_of___locals___OKODto__7: {
+      /** Detail */
+      detail: string | null;
+      response: components["schemas"]["CountDataFramesODto"];
+    };
   };
   responses: never;
   parameters: never;
@@ -149,7 +195,7 @@ export interface operations {
       /** @description Successful Response */
       200: {
         content: {
-          "application/json": components["schemas"]["ConnectionODto"][];
+          "application/json": components["schemas"]["adapters__controllers__helpers__response_helper__ResponseHelper__response_model_of___locals___OKODto__1"];
         };
       };
       /** @description Bad Request */
@@ -177,7 +223,7 @@ export interface operations {
       /** @description Successful Response */
       200: {
         content: {
-          "application/json": components["schemas"]["ConnectionODto"][];
+          "application/json": components["schemas"]["adapters__controllers__helpers__response_helper__ResponseHelper__response_model_of___locals___OKODto__2"];
         };
       };
       /** @description Bad Request */
@@ -213,7 +259,7 @@ export interface operations {
       /** @description Successful Response */
       200: {
         content: {
-          "application/json": components["schemas"]["TestStatusODto"];
+          "application/json": components["schemas"]["adapters__controllers__helpers__response_helper__ResponseHelper__response_model_of___locals___OKODto__3"];
         };
       };
       /** @description Bad Request */
@@ -252,7 +298,7 @@ export interface operations {
       /** @description Successful Response */
       200: {
         content: {
-          "application/json": components["schemas"]["ConnectionODto"][];
+          "application/json": components["schemas"]["adapters__controllers__helpers__response_helper__ResponseHelper__response_model_of___locals___OKODto__4"];
         };
       };
       /** @description Bad Request */
@@ -286,7 +332,7 @@ export interface operations {
       /** @description Successful Response */
       200: {
         content: {
-          "application/json": components["schemas"]["ConnectionODto"][];
+          "application/json": components["schemas"]["adapters__controllers__helpers__response_helper__ResponseHelper__response_model_of___locals___OKODto__5"];
         };
       };
       /** @description Bad Request */
@@ -320,7 +366,7 @@ export interface operations {
       /** @description Successful Response */
       200: {
         content: {
-          "application/json": components["schemas"]["TestStatusODto"];
+          "application/json": components["schemas"]["adapters__controllers__helpers__response_helper__ResponseHelper__response_model_of___locals___OKODto__6"];
         };
       };
       /** @description Bad Request */
@@ -354,7 +400,7 @@ export interface operations {
       /** @description Successful Response */
       200: {
         content: {
-          "application/json": components["schemas"]["CountDataFramesODto"];
+          "application/json": components["schemas"]["adapters__controllers__helpers__response_helper__ResponseHelper__response_model_of___locals___OKODto__7"];
         };
       };
       /** @description Bad Request */

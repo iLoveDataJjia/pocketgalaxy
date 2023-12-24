@@ -2,12 +2,11 @@ from abc import ABC, abstractmethod
 from datetime import datetime
 from typing import Literal
 
-from adapters.routes.connections.dto import (
+from adapters.controllers.connections.dto import (
     ConnectionIDto,
     MySqlInfoIDto,
     PostgreSqlInfoIDto,
 )
-from helpers.backend_exception import AbstractMethodException
 
 
 class ConnectionEnt(ABC):
@@ -78,7 +77,7 @@ class PostgreSqlEnt(ConnectionEnt):
         return ConnectionIDto(
             name=self.name,
             connector_info=PostgreSqlInfoIDto(
-                type=self.type,
+                type="postgresql",
                 host=self.host,
                 port=self.port,
                 database=self.database,
@@ -96,7 +95,7 @@ class MySqlEnt(ConnectionEnt):
         host: str,
         port: int,
         user: str,
-        password: str | None,
+        password: str,
     ) -> None:
         super().__init__("mysql", name, is_up)
         self.host = host
@@ -105,9 +104,7 @@ class MySqlEnt(ConnectionEnt):
         self.password = password
 
     @classmethod
-    def from_dto(
-        cls, name: str, is_up: bool, mysql_info: MySqlInfoIDto
-    ) -> "MySqlInfoIDto":
+    def from_dto(cls, name: str, is_up: bool, mysql_info: MySqlInfoIDto) -> "MySqlEnt":
         return MySqlEnt(
             name,
             is_up,
@@ -121,7 +118,7 @@ class MySqlEnt(ConnectionEnt):
         return ConnectionIDto(
             name=self.name,
             connector_info=MySqlInfoIDto(
-                type=self.type,
+                type="mysql",
                 host=self.host,
                 port=self.port,
                 user=self.user,

@@ -92,15 +92,16 @@ class PostgreSqlRow(ConnectionRow):
         return ent
 
     def update_from_ent(self, entity: ConnectionEnt) -> None:
-        if not isinstance(entity, PostgreSqlEnt):
+        if isinstance(entity, PostgreSqlEnt):
+            self.name = entity.name
+            self.is_up = entity.is_up
+            self.host = entity.host
+            self.port = entity.port
+            self.database = entity.database
+            self.user = entity.user
+            self.password = entity.password
+        else:
             self._raiseCrossConnectionTypeUpdate()
-        self.name = entity.name
-        self.is_up = entity.is_up
-        self.host = entity.host
-        self.port = entity.port
-        self.database = entity.database
-        self.user = entity.user
-        self.password = entity.password
 
 
 class MySqlRow(ConnectionRow):
@@ -110,7 +111,7 @@ class MySqlRow(ConnectionRow):
     host: Mapped[str]
     port: Mapped[int]
     user: Mapped[str]
-    password: Mapped[Optional[str]]
+    password: Mapped[str]
 
     __mapper_args__ = {
         "polymorphic_identity": __tablename__,
@@ -141,14 +142,15 @@ class MySqlRow(ConnectionRow):
         return ent
 
     def update_from_ent(self, entity: ConnectionEnt) -> None:
-        if not isinstance(entity, MySqlEnt):
+        if isinstance(entity, MySqlEnt):
+            self.name = entity.name
+            self.is_up = entity.is_up
+            self.host = entity.host
+            self.port = entity.port
+            self.user = entity.user
+            self.password = entity.password
+        else:
             self._raiseCrossConnectionTypeUpdate()
-        self.name = entity.name
-        self.is_up = entity.is_up
-        self.host = entity.host
-        self.port = entity.port
-        self.user = entity.user
-        self.password = entity.password
 
 
 class ConnectionsRep:

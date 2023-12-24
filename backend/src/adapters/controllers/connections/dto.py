@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Literal
+from typing import List, Literal
 
 from pydantic import BaseModel
 
@@ -18,7 +18,7 @@ class MySqlInfoIDto(BaseModel):
     host: str
     port: int
     user: str
-    password: str | None
+    password: str
 
 
 ConnectorInfoIDto = PostgreSqlInfoIDto | MySqlInfoIDto

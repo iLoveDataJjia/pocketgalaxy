@@ -9,8 +9,8 @@ services:
       POSTGRES_DB: db
       POSTGRES_USER: user
       POSTGRES_PASSWORD: pwd
-    volumes:
-      - ./volumes/postgresql/data:/var/lib/postgresql/data
+    # volumes:
+    #  - ./volumes/postgresql/var/lib/postgresql/data:/var/lib/postgresql/data
 
   mysql:
     image: mysql:latest
@@ -21,5 +21,5 @@ services:
       MYSQL_DATABASE: db
       MYSQL_USER: user
       MYSQL_PASSWORD: pwd
-    volumes:
-      - ./volumes/mysql/data:/var/lib/postgresql/data
+    # volumes:
+    #  - ./volumes/mysql/var/lib/mysql/data:/var/lib/mysql/data

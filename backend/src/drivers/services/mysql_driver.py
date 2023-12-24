@@ -1,15 +1,15 @@
 import pymysql
-from adapters.routes.connections.dto import MySqlInfoIDto
+from adapters.controllers.connections.dto import MySqlInfoIDto
 
 
 class MySqlDriver:
-    def test_status(self, mysql_conn_dto: MySqlInfoIDto) -> bool:
+    def test_status(self, dto: MySqlInfoIDto) -> bool:
         try:
             with pymysql.connect(
-                host=mysql_conn_dto.host,
-                port=mysql_conn_dto.port,
-                user=mysql_conn_dto.user,
-                password=mysql_conn_dto.password,
+                host=dto.host,
+                port=dto.port,
+                user=dto.user,
+                password=dto.password,
             ) as connection:
                 return connection.open
         except pymysql.Error:
