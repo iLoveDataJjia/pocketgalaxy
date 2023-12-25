@@ -98,7 +98,7 @@ class ConnectionsCtrl:
         return self._app.router
 
 
-connections_rts_impl = ConnectionsCtrl(
+connections_ctrl_impl = ConnectionsCtrl(
     connections_usecase_impl,
     response_helper_impl,
 )

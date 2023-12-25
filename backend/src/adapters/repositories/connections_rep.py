@@ -44,7 +44,7 @@ class ConnectionRow(db_driver_impl.Base):
     def update_from_ent(self, _: ConnectionEnt) -> None:
         raise AbstractMethodException
 
-    def _raiseCrossConnectionTypeUpdate(self) -> None:
+    def _raise_cross_connection_type_update(self) -> None:
         raise BadRequestException(
             "Apologies, the system doesn't allow updates across different connection types. "
             + "To ensure smooth operations, updates should be made within the same connection type."
@@ -101,7 +101,7 @@ class PostgreSqlRow(ConnectionRow):
             self.user = entity.user
             self.password = entity.password
         else:
-            self._raiseCrossConnectionTypeUpdate()
+            self._raise_cross_connection_type_update()
 
 
 class MySqlRow(ConnectionRow):
@@ -150,7 +150,7 @@ class MySqlRow(ConnectionRow):
             self.user = entity.user
             self.password = entity.password
         else:
-            self._raiseCrossConnectionTypeUpdate()
+            self._raise_cross_connection_type_update()
 
 
 class ConnectionsRep:
@@ -165,17 +165,19 @@ class ConnectionsRep:
         session.add(row)
 
     def delete(self, session: Session, connection_id: int) -> None:
-        row = self._getOrRaiseWhenConnectionNotFound(session, connection_id)
+        row = self._get_or_raise_when_connection_not_found(session, connection_id)
         session.delete(row)
 
     def get(self, session: Session, connection_id: int) -> ConnectionEnt:
-        return self._getOrRaiseWhenConnectionNotFound(session, connection_id).to_ent()
+        return self._get_or_raise_when_connection_not_found(
+            session, connection_id
+        ).to_ent()
 
     def update(self, session: Session, entity: ConnectionEnt) -> None:
-        row = self._getOrRaiseWhenConnectionNotFound(session, entity.id)
+        row = self._get_or_raise_when_connection_not_found(session, entity.id)
         row.update_from_ent(entity)
 
-    def _getOrRaiseWhenConnectionNotFound(
+    def _get_or_raise_when_connection_not_found(
         self, session: Session, connection_id: int
     ) -> ConnectionRow:
         loader_opt = selectin_polymorphic(ConnectionRow, [PostgreSqlRow, MySqlRow])

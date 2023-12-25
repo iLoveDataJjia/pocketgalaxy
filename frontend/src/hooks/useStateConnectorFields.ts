@@ -19,7 +19,7 @@ export function useStateAllConnectorFields() {
       host: "",
       port: 3306,
       user: "",
-      password: null,
+      password: "",
     }),
     [Connector.MariaDB]: useState<components["schemas"]["PostgreSqlInfoIDto"]>({
       type: "postgresql",

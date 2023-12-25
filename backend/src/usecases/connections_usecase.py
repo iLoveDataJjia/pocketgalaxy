@@ -34,17 +34,17 @@ class ConnectionsUseCase:
             return self._list(session)
 
     def create(self, connection: ConnectionIDto) -> List[ConnectionODto]:
-        def createFromEntity(ent: ConnectionEnt) -> List[ConnectionODto]:
+        def create_from_entity(ent: ConnectionEnt) -> List[ConnectionODto]:
             try:
                 with self.db_driver.get_session() as session:
                     self.connections_rep.save(session, ent)
                     return self._list(session)
             except IntegrityError as e:
-                raise self._buildNameAlreadyUtilizedException(e)
+                raise self._build_name_already_utilized_exception(e)
 
-        self._raiseUnlessConnectionIsUp(connection.connector_info)
+        self._raise_unless_connection_is_up(connection.connector_info)
         ent = ConnectionEnt.from_dto(connection, True)
-        return createFromEntity(ent)
+        return create_from_entity(ent)
 
     def test(self, connector_info: ConnectorInfoIDto) -> TestStatusODto:
         if connector_info.type == "postgresql":
@@ -58,7 +58,7 @@ class ConnectionsUseCase:
     def update(
         self, connection_id: int, connection_idto: ConnectionIDto
     ) -> List[ConnectionODto]:
-        def updateWithEntity(new_ent: ConnectionEnt) -> List[ConnectionODto]:
+        def update_with_entity(new_ent: ConnectionEnt) -> List[ConnectionODto]:
             try:
                 with self.db_driver.get_session() as session:
                     ent = self.connections_rep.get(session, connection_id).update(
@@ -67,11 +67,11 @@ class ConnectionsUseCase:
                     self.connections_rep.update(session, ent)
                     return self._list(session)
             except IntegrityError as e:
-                raise self._buildNameAlreadyUtilizedException(e)
+                raise self._build_name_already_utilized_exception(e)
 
-        self._raiseUnlessConnectionIsUp(connection_idto.connector_info)
+        self._raise_unless_connection_is_up(connection_idto.connector_info)
         new_ent = ConnectionEnt.from_dto(connection_idto, True)
-        return updateWithEntity(new_ent)
+        return update_with_entity(new_ent)
 
     def delete(self, connection_id: int) -> List[ConnectionODto]:
         with self.db_driver.get_session() as session:
@@ -95,11 +95,11 @@ class ConnectionsUseCase:
             for ent in self.connections_rep.list(session)
         ]
 
-    def _raiseUnlessConnectionIsUp(self, connector_info: ConnectorInfoIDto) -> None:
+    def _raise_unless_connection_is_up(self, connector_info: ConnectorInfoIDto) -> None:
         if not self.test(connector_info).is_up:
-            raise BadRequestException("Connection's down.")
+            raise BadRequestException("Connection is incorrect or down.")
 
-    def _buildNameAlreadyUtilizedException(
+    def _build_name_already_utilized_exception(
         self, e: IntegrityError
     ) -> BadRequestException | IntegrityError:
         return (

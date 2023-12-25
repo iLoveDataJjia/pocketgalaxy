@@ -1,7 +1,11 @@
 import uvicorn
 from adapters.controllers.connections.connections_ctrl import (
     ConnectionsCtrl,
-    connections_rts_impl,
+    connections_ctrl_impl,
+)
+from adapters.controllers.helpers.response_helper import (
+    ResponseHelper,
+    response_helper_impl,
 )
 from drivers.env_loader_driver import EnvLoaderDriver, env_laoder_driver_impl
 from fastapi import FastAPI
@@ -9,13 +13,18 @@ from fastapi import FastAPI
 
 class ApiDriver:
     def __init__(
-        self, env_loader_driver: EnvLoaderDriver, connections_rts: ConnectionsCtrl
+        self,
+        response_helper: ResponseHelper,
+        connections_rts: ConnectionsCtrl,
+        env_loader_driver: EnvLoaderDriver,
     ) -> None:
         self.connections_rts = connections_rts
         self.env_loader_driver = env_loader_driver
+        self.response_helper = response_helper
 
         self.app = FastAPI(title="PocketGalaxy")
         self.app.include_router(self.connections_rts.router())
+        self.response_helper.set_cors_when_not_prod(self.app)
 
     def run(self) -> None:
         if self.env_loader_driver.prod_mode:
@@ -38,5 +47,7 @@ class ApiDriver:
             )
 
 
-api_driver_impl = ApiDriver(env_laoder_driver_impl, connections_rts_impl)
+api_driver_impl = ApiDriver(
+    response_helper_impl, connections_ctrl_impl, env_laoder_driver_impl
+)
 _ = None if env_laoder_driver_impl.prod_mode else api_driver_impl.app

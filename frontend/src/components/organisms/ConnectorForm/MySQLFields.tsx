@@ -58,7 +58,7 @@ export function MySQLFields({
         onChange={(event) =>
           setConnectorFields((fields) => ({
             ...fields,
-            password: event.target.value == "" ? null : event.target.value,
+            password: event.target.value,
           }))
         }
       />

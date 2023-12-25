@@ -3,7 +3,7 @@ import { useLocation } from "react-router-dom";
 import { Connector } from "../../../helpers/Connector";
 import { CardLayout } from "../../../components/molecules/CardLayout";
 import { ConnectorCarousel } from "../../../components/organisms/ConnectorCarousel";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ConnectorImg } from "../../../components/atoms/ConnectorImg";
 import { useNavigate } from "react-router-dom";
 import { Button } from "../../../components/molecules/Button";
@@ -14,17 +14,19 @@ import { useBackend } from "../../../services/backend";
 import { paths } from "../../../services/backend/endpoints";
 import { Text } from "../../../components/atoms/Text";
 import { LoadingText } from "../../../components/atoms/LoadingText";
+import { useToaster } from "../../../hooks/useToaster";
 
 export default function Page() {
   const location = useLocation();
   const navigate = useNavigate();
+  const { notify } = useToaster();
   const [name, setName] = useState("");
   const allConnectorFieldsState = useStateAllConnectorFields();
   const { backend } = useBackend();
   const {
     mutate: testStatus,
-    data: isUp,
-    isPending: isCreating,
+    data: status,
+    isPending: isTesting,
   } = useMutation({
     mutationFn: (
       payload: paths["/connections/test-status"]["post"]["requestBody"]["content"]["application/json"]
@@ -39,7 +41,7 @@ export default function Page() {
   const {
     mutate: createConnection,
     data: connections,
-    isPending: isTesting,
+    isPending: isCreating,
   } = useMutation({
     mutationFn: (
       payload: paths["/connections"]["post"]["requestBody"]["content"]["application/json"]
@@ -51,6 +53,16 @@ export default function Page() {
         .then((_) => _.data);
     },
   });
+  useEffect(() => {
+    !isTesting &&
+      status &&
+      !status.is_up &&
+      notify("Connection is incorrect or down.", "warning");
+    !isTesting && status && status.is_up && notify("Connection is up.", "info");
+  }, [isTesting, status]);
+  useEffect(() => {
+    !isCreating && connections && notify("Connection successful.", "success");
+  }, [isCreating, connections]);
 
   function extractConnectorFromURLParams() {
     const foundConnector = new URLSearchParams(location.search).get(
@@ -85,15 +97,15 @@ export default function Page() {
         <Button
           label={"Test"}
           color="sky"
-          loading={isCreating}
-          disabled={isTesting}
+          loading={isTesting}
+          disabled={isCreating}
           onClick={() => testStatus(allConnectorFieldsState[connector][0])}
         />
         <Button
           label={"Connect"}
           color="emerald"
-          loading={isTesting}
-          disabled={isCreating}
+          loading={isCreating}
+          disabled={isTesting}
           onClick={() =>
             createConnection({
               name: name,
